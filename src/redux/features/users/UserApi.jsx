@@ -11,6 +11,12 @@ const userApi = api.injectEndpoints({
       invalidatesTags: ["user"],
     }),
 
+
+
+
+
+    
+
     verifyEmail: builder.mutation({
       query: (email) => ({
         url: "/auth/verify",
@@ -18,6 +24,8 @@ const userApi = api.injectEndpoints({
         body: email,
       }),
     }),
+
+
     forgetpassword: builder.mutation({
       query: (data) => ({
         url: "/users/auth/forgot-password",
@@ -37,7 +45,7 @@ const userApi = api.injectEndpoints({
 
     loginUser: builder.mutation({
       query: (user) => ({
-        url: "/auth/login",
+        url: "/users/auth/login",
         method: "POST",
         body: user,
       }),
@@ -84,7 +92,7 @@ const userApi = api.injectEndpoints({
 
     getProfile: builder.query({
       query: (token) => ({
-        url: "/own-profile",
+        url: "/users/profile",
         headers: {
           Authorization: `Bearer ${token}`,
         },

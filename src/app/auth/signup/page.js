@@ -1,18 +1,47 @@
 "use client";
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import AuthLayout from "@/components/AuthLayout";
 import Link from "next/link";
 import Image from "next/image";
 import signupimage from "/public/images/logo.png";
 import googleicon from "/public/images/google.png";
 import SignupCarousel from "@/components/utils/SignupCarosel";
+import { useRegisterUserMutation } from "@/redux/features/users/UserApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/features/users/userSlice";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
 
 const Signup = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [registerUser]=useRegisterUserMutation()
+  const onFinish = async(values) => {
+    const alldata = { ...values, role: "user" };
+    console.log('allvalue', alldata); // Log alldata here
+    try {  
+      const response = await registerUser(alldata);
+      console.log('response', response);
+      if (response?.data?.success) {
+        message.success(response?.data?.data?.message || response?.data?.message);
+        Cookies.set("token", response?.data?.data?.token);
+        dispatch(setUser(response?.data?.data?.newUser));
+        router.push("/auth/signup/intarest");
+      }
 
+    } catch (error) {
+      console.log('error', error);
+      message.error("Something went wrong");
+    }
+
+
+
+
+    // /auth/signup/intarest
+  };
+  
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -83,11 +112,11 @@ const Signup = () => {
               </Form.Item>
 
               <Form.Item className=" min-[2035px]:w-[500px] min-[2035px]:h-[50px] min-[375px]:w-[330px] min-[320px]:w-[290px]  w-[360px] h-[44px]">
-                <Link href="/auth/signup/intarest">
-                <Button className="text-[#FFFFFF] text-[16px] font-semibold p-6" size="" type="primary" htmlType="submit" block>
+             
+                <Button  className="text-[#FFFFFF] text-[16px] font-semibold p-6" size="" type="primary" htmlType="submit" block>
                   Create account
                 </Button>
-               </Link>
+            
               </Form.Item>
 
               <Form.Item className=" min-[2035px]:w-[500px] min-[2035px]:h-[50px] min-[375px]:w-[330px] min-[320px]:w-[290px]  w-[360px] h-[44px]">

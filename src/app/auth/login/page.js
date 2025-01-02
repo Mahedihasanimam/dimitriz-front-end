@@ -9,21 +9,39 @@ import Image from "next/image";
 import logoimage from "/public/images/logoimage.png";
 import googleicon from "/public/images/google.png";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { useLoginUserMutation } from "@/redux/features/users/UserApi";
+import Cookies from "js-cookie";
+import { setUser } from "@/redux/features/users/userSlice";
 
 const signIn = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const router=useRouter()
-  const onFinish = (values) => {
+  const dispatch = useDispatch();
+  const [loginUser]=useLoginUserMutation()
+  const onFinish = async(values) => {
     console.log("Success:", values);
-    if(values){
-      messageApi.open({
-        type: 'success',
-        content: 'login success',
-      });
-    }
-    setTimeout(() => {
-      router.push("/")
-    }, 1000);
+    
+      try {
+          
+          const response = await loginUser(values);
+          console.log('response', response);
+          if (response?.data?.success) {
+            message.success(response?.data?.data?.message || response?.data?.message);
+            dispatch(setUser(response?.data?.data?.user));
+            Cookies.set("token", response?.data?.data?.token);
+            router.push("/");
+          }
+          if(response?.error){
+            message.error(response?.error?.data?.message);
+          }
+    
+        } catch (error) {
+          console.log('error', error);
+          message.error("Something went wrong");
+        }
+    
+   
   };
 
   const onFinishFailed = (errorInfo) => {

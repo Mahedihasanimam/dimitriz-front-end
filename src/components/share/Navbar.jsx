@@ -1,33 +1,51 @@
 "use client";
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
 import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
 import {
   ShoppingCartOutlined,
   MenuOutlined,
   SearchOutlined,
   DownOutlined,
-  GlobalOutlined
+  GlobalOutlined,
+  UserOutlined
 } from "@ant-design/icons";
 import logo from "/public/images/logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Option } from "antd/es/mentions";
-import Cookies from "universal-cookie";
+
 import { useRouter } from "next/navigation";
+import { useLazyGetProfileQuery } from "@/redux/features/users/UserApi";
+import Cookies from "js-cookie";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUser, setUser } from "@/redux/features/users/userSlice";
+import { UserContext } from "@/lib/UserContext";
 
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [language, setLanguage] = useState("en"); // Default to 'en'
   const [isModalVisible, setIsModalVisible] = useState(false);
   const t = useTranslations();
-  const cookieMiya = new Cookies();
+const dispatch=useDispatch();
   const router = useRouter();
+  const [getProfile] = useLazyGetProfileQuery();
+  const { logoutUser } = useContext(UserContext);
 
+
+  const handlesetUser = async () => {
+    const user = await getProfile();
+    // console.log(user)
+    if (user?.data?.data) {
+      dispatch(setUser(user?.data?.data));
+    }
+  };
   useEffect(() => {
-    const savedLang = cookieMiya.get("NEXT_LOCALE") || "en";
+    handlesetUser();
+    const savedLang = Cookies.get("NEXT_LOCALE") || "en";
     setLanguage(savedLang);
   }, []);
+
 
   const handleChange = (lang) => {
     if (lang && lang !== language) {
@@ -51,6 +69,13 @@ const Navbar = () => {
   const closeDrawer = () => {
     setDrawerVisible(false);
   };
+  const user = useSelector((state) => state.user.user);
+  const handleLogout = () => {
+    logoutUser();
+    dispatch(clearUser());
+    Cookies.remove("token");
+    router.push("/auth/login");
+  };
 
   const categoryMenu = (
     <Menu>
@@ -59,6 +84,7 @@ const Navbar = () => {
       <Menu.Item key="3">{t('Category')} 3</Menu.Item>
     </Menu>
   );
+
 
   return (
     <nav className="w-full p-4 bg-white mx-auto flex justify-between items-center">
@@ -99,14 +125,32 @@ const Navbar = () => {
         <Link className="cursor-pointer" href={"/shoppingcart"}>
           <ShoppingCartOutlined className="text-2xl" />
         </Link>
-        <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
-          {t('LogIn')}
-        </Link>
-        <Link href={"/auth/signup"}>
-          <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5" type="primary">
-            {t('Sign Up')}
-          </Button>
-        </Link>
+        {
+            user ? (
+             <div>
+              <Button className="mr-2">
+                <UserOutlined />
+                <strong>
+                  {user?.name}
+                </strong>
+              </Button>
+               <span onClick={handleLogout}  className="text-[16px] font-semibold text-[#475467] cursor-pointer">
+                {t('LogOut')}
+              </span>
+             </div>
+            ) : (
+              <div>
+                   <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
+            {t('LogIn')}
+          </Link>
+          <Link href={"/auth/signup"}>
+            <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5 ml-4" type="primary">
+              {t('Sign Up')}
+            </Button>
+          </Link>
+              </div>
+            )
+          }
 
         <Button onClick={showModal} size="large">
           <GlobalOutlined />
@@ -166,7 +210,14 @@ const Navbar = () => {
           <Link className="cursor-pointer" href={"/shoppingcart"}>
             <ShoppingCartOutlined className="text-2xl" />
           </Link>
-          <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
+          {
+            user ? (
+              <Link href="/auth/logout" className="text-[16px] font-semibold text-[#475467]">
+                {t('LogOut')}
+              </Link>
+            ) : (
+              <div>
+                   <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
             {t('LogIn')}
           </Link>
           <Link href={"/auth/signup"}>
@@ -174,6 +225,9 @@ const Navbar = () => {
               {t('Sign Up')}
             </Button>
           </Link>
+              </div>
+            )
+          }
         </div>
       </Drawer>
     </nav>
