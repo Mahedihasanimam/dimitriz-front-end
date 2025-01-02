@@ -80,7 +80,7 @@ const page = () => {
                 )}
               </p>
               <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-                <Link href="/auth/signup">
+                <Link href="/auth/instructor-signup">
                   <Button
                     className="text-[#FFFFFF] text-[16px] font-semibold p-6"
                     size="large"
