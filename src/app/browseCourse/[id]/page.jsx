@@ -24,14 +24,19 @@ import ReviewCard from "@/components/ui/ReviewCard";
 // import student from "./Instructor.png";
 import Link from "next/link";
 import CourseCard from "@/components/ui/CourseCard";
-import { useRouter } from "next/navigation"; // Correct import
+import { useRouter, useSearchParams } from "next/navigation"; // Correct import
 import { useTranslations } from "next-intl";
+import { useGetSingleCourseByidQuery } from "@/redux/features/course/CourseApi";
 // import coursevideo from '/public/video/video1.mp4'
 const page = ({ params }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter(); // Correct usage
   const t=useTranslations()
-  // course curriculam data
+
+  const id=params?.id
+
+  const {data,isLoading}=useGetSingleCourseByidQuery(id);
+  console.log(id)
   const { Panel } = Collapse;
   const panels = [
     { id: "01", title: "Getting started", time: "02:30 min", isVideo: true },
@@ -41,6 +46,7 @@ const page = ({ params }) => {
     { id: "05", title: "Basic Fundamental", time: "10:30 min", isVideo: true },
     { id: "06", title: "Basic Fundamental", time: "10:30 min", isVideo: true },
   ];
+
 
   // review data
   const reviews = [
@@ -122,6 +128,7 @@ const page = ({ params }) => {
       category: "All courses",
     },
   ];
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleAddToCart = () => {
@@ -133,6 +140,13 @@ const page = ({ params }) => {
     console.log("Added to cart");
     router.push('/checkout')
   };
+
+  if(isLoading) return <div>Loading...</div>;
+  console.log('data----------------------------------------------',data)
+
+
+  console.log('data----------------------------------------------',id)
+
   return (
     <div>
       {contextHolder}
@@ -144,7 +158,7 @@ const page = ({ params }) => {
               {/* left side content here-------------------------------------------- */}
               <div className="xl:max-w-2xl lg:max-w-xl w-full space-y-3 xl:block lg:block  hidden ">
                 <h1 className="text-white text-2xl font-bold font-Merriweather">
-                  {t("Product Management Basic Course")}
+                  {data?.data?.title}
                 </h1>
                 <div className="flex items-start justify-start mb-2">
                   <span className="text-yellow-500 text-sm flex items-center justify-center">
@@ -152,18 +166,20 @@ const page = ({ params }) => {
                       className="text-xl"
                       allowHalf
                       count={1}
-                      defaultValue={4.7}
+                      defaultValue={data?.data?.averageRating}
                     />{" "}
                     <span className="text-[#FFFFFF] font-bold text-[14px]">
-                      4.7
+                    {data?.data?.averageRating}
                     </span>
                   </span>
                   <span className="text-[#FFFFFF] font-normal text-sm ml-2 pt-1">
-                    (65655)
+                    (
+                    {data?.data?.reviewCount}
+                    )
                   </span>
                 </div>
                 <p className="text-[#D0D5DD] text-sm font-normal pb-4">
-                  {("Learn Product Management like a Professional. Start from the fundamentals and go all the way to mastering product strategy,development, and market launch.")}
+                  {data?.data?.description?.slice(0, 200)}
                 </p>
 
                 <div className="bg-[#344054] p-6 rounded-sm  ">

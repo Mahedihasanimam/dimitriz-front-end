@@ -50,7 +50,7 @@ const dispatch=useDispatch();
   const handleChange = (lang) => {
     if (lang && lang !== language) {
       setLanguage(lang);
-      cookieMiya.set("NEXT_LOCALE", lang, { path: "/" });
+      Cookies.set("NEXT_LOCALE", lang, { path: "/" });
       router.refresh(); // Refresh the data and re-render the page content
       setIsModalVisible(false); // Close the modal after selection
     }

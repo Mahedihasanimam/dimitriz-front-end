@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 import Image from "next/image";
 import React from "react";
 import heroimg from "/public/images/browseheroimg.png";
@@ -7,6 +7,7 @@ import { SearchOutlined, DownOutlined,RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import CourseCard from "@/components/ui/CourseCard";
 import { useTranslations } from "next-intl";
+import { useGetallCourseQuery } from "@/redux/features/course/CourseApi";
 
 const page = () => {
   const t=useTranslations()
@@ -129,6 +130,8 @@ const page = () => {
           "category": "All courses"
         }
       ]
+      const {data,isLoading}=useGetallCourseQuery();
+
       
   const categoryMenu = (
     <Menu>
@@ -214,18 +217,10 @@ const page = () => {
         </div>
          {/* Course cards for each category */}
        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
-              {coursemenu.map((item) => (
+              {data?.data?.result.map((item) => (
                 <CourseCard
                   key={item.id}
-                  courseimage={item.imageLink}
-                  courseTitle={item.courseTitle}
-                  instructor={item.instructor}
-                  rating={item.rating}
-                  price={item.price}
-                  reviews={item.reviews}
-                  duration={item.duration}
-                  students={item.students}
-                  enrollLink={item.id}
+                 data={item}
                 />
               ))}
         </div>
@@ -241,18 +236,10 @@ const page = () => {
         </div>
          {/* Course cards for each category */}
        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
-              {coursemenu.map((item) => (
+              {data?.data?.result.map((item) => (
                 <CourseCard
                   key={item.id}
-                  courseimage={item.imageLink}
-                  courseTitle={item.courseTitle}
-                  instructor={item.instructor}
-                  rating={item.rating}
-                  price={item.price}
-                  reviews={item.reviews}
-                  duration={item.duration}
-                  students={item.students}
-                  enrollLink={item.enrollLink}
+                 data={item}
                 />
               ))}
         </div>
@@ -268,18 +255,10 @@ const page = () => {
         </div>
          {/* Course cards for each category */}
        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4 pb-[82px]">
-              {coursemenu.map((item) => (
+             {data?.data?.result.map((item) => (
                 <CourseCard
                   key={item.id}
-                  courseimage={item.imageLink}
-                  courseTitle={item.courseTitle}
-                  instructor={item.instructor}
-                  rating={item.rating}
-                  price={item.price}
-                  reviews={item.reviews}
-                  duration={item.duration}
-                  students={item.students}
-                  enrollLink={item.enrollLink}
+                 data={item}
                 />
               ))}
         </div>

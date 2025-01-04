@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://10.0.80.85:5000",
+    baseUrl: "http://10.0.80.85:5000/",
     prepareHeaders: (headers) => {
       const token = Cookies.get("token"); // Correct usage
       if (token) {
@@ -21,4 +21,4 @@ export const api = createApi({
   endpoints: () => ({}),
 });
 
-export const imageUrl = "http://10.0.80.85:5000";
+export const imageUrl = "http://10.0.80.85:5000/";

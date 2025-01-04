@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import Image from "next/image";
 import catimage1 from "/public/images/icons/art.png";
@@ -11,8 +12,13 @@ import catimage8 from "/public/images/icons/finnace.png";
 import catimage9 from "/public/images/icons/science.png";
 import catimage10 from "/public/images/icons/art.png";
 import { useTranslations } from "next-intl";
+import { useGetallCategoryQuery } from "@/redux/features/course/CourseApi";
 const Categories = () => {
+
+  const {data,isLoading}=useGetallCategoryQuery();
   const t =useTranslations()
+  if(isLoading) return <div>Loading...</div>
+  console.log('all category data-----------------------------------',data);
   const categories = [
     {
       category: `${t("Art & Design")}`,
