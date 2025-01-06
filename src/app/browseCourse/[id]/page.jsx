@@ -442,235 +442,67 @@ const page = ({ params }) => {
               </div>
 
               {/* course section here----------------------------------------------------------- */}
-              {/* <div className=" mx-auto bg-[#F2F4F7] rounded-md lg:p-4 md:p-4 p-0 border-none">
+        
+        
+              <div className="mx-auto bg-[#F2F4F7] rounded-md lg:p-4 md:p-4 p-0 border-none">
                 <Collapse
                   defaultActiveKey={["1"]}
                   accordion
                   expandIconPosition="right"
                   className="bg-[#F2F4F7] rounded-lg border-none"
                 >
-                
-                  <Panel
-                    header={
-                      <div className="">
-                        <div className="text-lg font-semibold text-[#475467]">
-                          {t("Introduction to Product Management")}
+                  {data?.data?.sections?.map((section, index) => (
+                    <Panel
+                      header={
+                        <div>
+                          <div className="text-lg font-semibold text-[#475467]">
+                            {section.title}
+                          </div>
+                          <div className="text-xs text-[#98A2B3] font-normal">
+                            {`${section.lectureCount} Lectures • ${section.totalDuration} Minutes`}
+                          </div>
                         </div>
-                        <div className="text-xs text-[#98A2B3] font-normal">
-                          {t("06 Lectures • 30 Minutes")}
-                        </div>
-                      </div>
-                    }
-                    key="1"
-                    className="mb-2 bg-transparent "
-                    style={{ backgroundColor: "transparent" }}
-                  >
-                    <div className="space-y-3 cursor-pointer">
-                    
-                      {panels.map((panel) => (
-                        <div
-                          key={panel.id}
-                          className="flex justify-between items-center p-4 bg-white rounded-lg shadow mb-4" // Adjust margin, padding and shadow
-                        >
-                          <div className="flex items-center">
-                            <div className="bg-[#F2F4F7] text-[#475467] w-10 h-10 rounded-lg flex items-center justify-center mr-4 font-bold">
-                              {panel.id}
+                      }
+                      key={index + 1}
+                      className="mb-2 bg-transparent"
+                      style={{ backgroundColor: "transparent" }}
+                    >
+                      <div className="space-y-3 cursor-pointer">
+                        {section.lectures?.map((lecture, lectureIndex) => (
+                          <div
+                            key={lectureIndex}
+                            className="flex justify-between items-center p-4 bg-white rounded-lg shadow mb-4"
+                          >
+                            <div className="flex items-center">
+                              <div className="bg-[#F2F4F7] text-[#475467] w-10 h-10 rounded-lg flex items-center justify-center mr-4 font-bold">
+                                {lectureIndex + 1}
+                              </div>
+                              <div>
+                                <p className="font-semibold text-[#475467] text-[16px]">
+                                  {lecture.title || `Lecture ${lectureIndex + 1}`}
+                                </p>
+                                <p className="text-sm text-[#98A2B3]">
+                                  {lecture.isVideo ? lecture.time : lecture.fileSize}
+                                </p>
+                              </div>
                             </div>
                             <div>
-                              <p className="font-semibold text-[#475467] text-[16px]">
-                                {panel.title}
-                              </p>
-                              {panel.isVideo ? (
-                                <p className="text-sm text-[#98A2B3]">
-                                  {panel.time}
-                                </p>
+                              {lecture.isVideo ? (
+                                <PlayCircleOutlined className="text-[#14698A] text-2xl" />
                               ) : (
-                                <p className="text-sm text-[#98A2B3]">
-                                  {panel.fileSize}
-                                </p>
+                                <FileOutlined className="text-[#14698A] text-2xl" />
                               )}
                             </div>
                           </div>
-                          <div>
-                            {panel.isVideo ? (
-                              <PlayCircleOutlined className="text-[#14698A] text-2xl" />
-                            ) : (
-                              <FileOutlined className="text-[#14698A] text-2xl" />
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </Panel>
-
-                
-                  <Panel
-                    header={
-                      <div className="">
-                        <div className="text-lg font-semibold text-[#475467]">
-                          {t("Introduction to Product Management")}
-                        </div>
-                        <div className="text-xs text-[#98A2B3] font-normal">
-                          06 Lectures • 30 Minutes
-                        </div>
+                        ))}
                       </div>
-                    }
-                    key="2"
-                    className="mb-2 bg-transparent"
-                    style={{ backgroundColor: "transparent" }}
-                  >
-                    <div className="space-y-3 cursor-pointer">
-                
-                      {panels.map((panel) => (
-                        <div
-                          key={panel.id}
-                          className="flex justify-between items-center p-4 bg-white rounded-lg shadow mb-4" // Adjust margin, padding and shadow
-                        >
-                          <div className="flex items-center">
-                            <div className="bg-[#F2F4F7] text-[#475467] w-10 h-10 rounded-lg flex items-center justify-center mr-4 font-bold">
-                              {panel.id}
-                            </div>
-                            <div>
-                              <p className="font-semibold text-[#475467] text-[16px]">
-                                {panel.title}
-                              </p>
-                              {panel.isVideo ? (
-                                <p className="text-sm text-[#98A2B3]">
-                                  {panel.time}
-                                </p>
-                              ) : (
-                                <p className="text-sm text-[#98A2B3]">
-                                  {panel.fileSize}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div>
-                            {panel.isVideo ? (
-                              <PlayCircleOutlined className="text-[#14698A] text-2xl" />
-                            ) : (
-                              <FileOutlined className="text-[#14698A] text-2xl" />
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </Panel>
-                 
-                  <Panel
-                    header={
-                      <div className="">
-                        <div className="text-lg font-semibold text-[#475467]">
-                          {t("Introduction to Product Management")}
-                        </div>
-                        <div className="text-xs text-[#98A2B3] font-normal">
-                          06 Lectures • 30 Minutes
-                        </div>
-                      </div>
-                    }
-                    key="3"
-                    className="mb-2 bg-transparent"
-                    style={{ backgroundColor: "transparent" }}
-                  >
-                    <div className="space-y-3 cursor-pointer">
-                     
-                      {panels.map((panel) => (
-                        <div
-                          key={panel.id}
-                          className="flex justify-between items-center p-4 bg-white rounded-lg shadow mb-4" // Adjust margin, padding and shadow
-                        >
-                          <div className="flex items-center">
-                            <div className="bg-[#F2F4F7] text-[#475467] w-10 h-10 rounded-lg flex items-center justify-center mr-4 font-bold">
-                              {panel.id}
-                            </div>
-                            <div>
-                              <p className="font-semibold text-[#475467] text-[16px]">
-                                {panel.title}
-                              </p>
-                              {panel.isVideo ? (
-                                <p className="text-sm text-[#98A2B3]">
-                                  {panel.time}
-                                </p>
-                              ) : (
-                                <p className="text-sm text-[#98A2B3]">
-                                  {panel.fileSize}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                          <div>
-                            {panel.isVideo ? (
-                              <PlayCircleOutlined className="text-[#14698A] text-2xl" />
-                            ) : (
-                              <FileOutlined className="text-[#14698A] text-2xl" />
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </Panel>
+                    </Panel>
+                  ))}
                 </Collapse>
-              </div> */}
-              {/* Course Section */}
-<div className="mx-auto bg-[#F2F4F7] rounded-md lg:p-4 md:p-4 p-0 border-none">
-  <Collapse
-    defaultActiveKey={["1"]}
-    accordion
-    expandIconPosition="right"
-    className="bg-[#F2F4F7] rounded-lg border-none"
-  >
-    {data?.data?.sections?.map((section, index) => (
-      <Panel
-        header={
-          <div>
-            <div className="text-lg font-semibold text-[#475467]">
-              {section.title}
-            </div>
-            <div className="text-xs text-[#98A2B3] font-normal">
-              {`${section.lectureCount} Lectures • ${section.totalDuration} Minutes`}
-            </div>
-          </div>
-        }
-        key={index + 1}
-        className="mb-2 bg-transparent"
-        style={{ backgroundColor: "transparent" }}
-      >
-        <div className="space-y-3 cursor-pointer">
-          {section.lectures?.map((lecture, lectureIndex) => (
-            <div
-              key={lectureIndex}
-              className="flex justify-between items-center p-4 bg-white rounded-lg shadow mb-4"
-            >
-              <div className="flex items-center">
-                <div className="bg-[#F2F4F7] text-[#475467] w-10 h-10 rounded-lg flex items-center justify-center mr-4 font-bold">
-                  {lectureIndex + 1}
-                </div>
-                <div>
-                  <p className="font-semibold text-[#475467] text-[16px]">
-                    {lecture.title || `Lecture ${lectureIndex + 1}`}
-                  </p>
-                  <p className="text-sm text-[#98A2B3]">
-                    {lecture.isVideo ? lecture.time : lecture.fileSize}
-                  </p>
-                </div>
               </div>
-              <div>
-                {lecture.isVideo ? (
-                  <PlayCircleOutlined className="text-[#14698A] text-2xl" />
-                ) : (
-                  <FileOutlined className="text-[#14698A] text-2xl" />
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Panel>
-    ))}
-  </Collapse>
-</div>
 
 
-              
+
             </div>
 
             {/* Course rating and reviews here---------------------------------------------- */}
@@ -682,24 +514,25 @@ const page = ({ params }) => {
                   count={1}
                   defaultValue={4.7}
                 />
-                <span className="px-4">4.5 </span> {t("Course Rating")}{" "}
+                <span className="px-4">{data?.data?.averageRating} </span> {t("Course Rating")}{" "}
                 <span className="text-lg text-[#475467] font-Inter">
-                  (4.2k students reviewed)
+                  {/* (4.2k students reviewed) */}
+                  ( {data?.data?.reviews?.length} {t("reviews")} )
                 </span>
               </h1>
 
               <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 mt-10">
-                {reviews.map((review, index) => (
+                {data?.data?.reviews?.slice(-8).map((review, index) => (
                   <ReviewCard key={index} review={review} />
                 ))}
               </div>
-              <Link
+              {/* <Link
                 href={" #"}
                 className="inline-flex items-center text-[#475467] border-b-2 border-[#475467] mt-8 text-[16px] font-semibold "
               >
                 {t("Show all reviews")}
                 <ArrowUpOutlined className="rotate-45 text-xl pl-2" />
-              </Link>
+              </Link> */}
             </div>
 
             <div className=" lg:mt-28 md:mt-24 mt-12 xl:max-w-2xl lg:max-w-xl w-full ">
@@ -707,18 +540,29 @@ const page = ({ params }) => {
                 {t("Instructor")}
               </h1>
               <div className="flex items-center justify-start px-2 mb-9">
-                <Image
+                {
+                  data?.data?.instructor?.image ?
+                  <Image
                   height={56}
                   width={56}
-                  src={instactor}
+                  src={ imageUrl + data?.data?.instructor?.image}
                   alt="instructor"
                   className=" rounded-full object-cover mr-4"
-                />
+                /> : <Image
+                height={56}
+                width={56}
+                src={instactor}
+                alt="instructor"
+                className=" rounded-full object-cover mr-4"
+              />
+                }
+                
                 <div>
-                  <h3 className="text-lg  font-semibold border-b-2 text-[#1D2939] border-[#1D2939] w-fit ">
-                    Johon Doe
+                  <h3 className="text-lg  font-semibold  text-[#1D2939]  w-fit ">
+                    {
+                      data?.data?.instructor?.name}
                   </h3>
-                  <p className="text-[#475467] text-[16px] font-normal">
+                  <p className="text-[#475467] text-[16px] font-normal border-t-2 border-[#1D2939]">
                     {t("Head of Product Management")}
                   </p>
                 </div>
