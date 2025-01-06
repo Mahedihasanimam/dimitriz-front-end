@@ -552,7 +552,7 @@ const page = ({ params }) => {
                 height={56}
                 width={56}
                 src={instactor}
-                alt="instructor"
+                alt="instructor" 
                 className=" rounded-full object-cover mr-4"
               />
                 }
