@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import emptycart from "/public/images/emptystates-empty-cart.png";
 import {
@@ -66,16 +66,33 @@ const page = () => {
     },
   ];
 
+
+  const [cartItems, setCartItems] = useState([]);
+
+  // Load cart items from local storage on component mount
+  useEffect(() => {
+    const storedItems = localStorage.getItem("cartItems");
+    if (storedItems) {
+      try {
+        setCartItems(JSON.parse(storedItems));
+      } catch (error) {
+        console.error("Error parsing cart items:", error);
+      }
+    }
+  }, []);
+
+
+  console.log("cartItems", cartItems);
   return (
     <>
-      {carditems.length === 0 ? (
+      {cartItems.length === 0 ? (
         <div className="container mx-auto px-6">
           <h1 className="text-[#000000] text-2xl font-bold lg:py-12 py-4">
             Shoppingcart
           </h1>
           <div className="pt-6 border-b-2 border-[#F2F4F7] pb-4 flex items-center justify-between">
             <h3 className=" font-semibold text-[#475467]  text-[16px]">
-              3 courses added in your cart
+              {cartItems.length} courses added in your cart
             </h3>
             <Link href="/checkout">
               <Button
@@ -92,7 +109,7 @@ const page = () => {
             </Link>
           </div>
           <div>
-            {carditems.map((item) => (
+            {cartItems.map((item) => (
               <div
                 key={item.id}
                 className=" w-full xl:flex lg:flex md:flex flex-row pb-8 my-4 bg-white border-b-2 border-dashed border-gray-200 overflow-hidden"

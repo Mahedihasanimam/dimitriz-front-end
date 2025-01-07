@@ -132,7 +132,7 @@ const page = ({ params }) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleAddToCart = (id) => {
+  const handleAddToCart = (data) => {
 
     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
     const existingItem = cartItems.find(item => item.id === id);
@@ -142,7 +142,7 @@ const page = ({ params }) => {
         content: 'Item already in cart',
       })
     } else {
-      cartItems.push({ id, quantity: 1 });
+      cartItems.push(data);
     }
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
@@ -334,7 +334,7 @@ const page = ({ params }) => {
                     €{data?.data?.price} {t("Buy Now")}
                   </Button>
                   <button
-                    onClick={() => handleAddToCart(data?.data?._id)}
+                    onClick={() => handleAddToCart(data?.data)}
                     className=" bg-transparent font-semibold px-6 pt-3 text-[#475467] block mx-auto"
                   >
                     {t("Add to Cart")}
