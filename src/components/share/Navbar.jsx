@@ -1,6 +1,6 @@
 "use client";
-import { useState,useEffect, useContext } from "react";
-import { Input, Button, Dropdown, Menu, Drawer, Modal, Select } from "antd";
+import { useState, useEffect, useContext } from "react";
+import { Input, Button, Dropdown, Menu, Drawer, Modal, Select, Avatar } from "antd";
 import {
   ShoppingCartOutlined,
   MenuOutlined,
@@ -22,13 +22,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser, setUser } from "@/redux/features/users/userSlice";
 import { UserContext } from "@/lib/UserContext";
 import Swal from "sweetalert2";
+import { imageUrl } from "@/redux/baseApi";
 
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [language, setLanguage] = useState("en"); // Default to 'en'
   const [isModalVisible, setIsModalVisible] = useState(false);
   const t = useTranslations();
-const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const router = useRouter();
   const [getProfile] = useLazyGetProfileQuery();
   const { logoutUser } = useContext(UserContext);
@@ -104,6 +105,7 @@ const dispatch=useDispatch();
     </Menu>
   );
 
+  console.log(user);
 
   return (
     <nav className="w-full p-4 bg-white mx-auto flex justify-between items-center">
@@ -120,19 +122,19 @@ const dispatch=useDispatch();
           placeholder="Search for course"
           className="w-full text-[#667085] text-[16px] h-[44px]"
           prefix={<SearchOutlined size={15} className="text-[#667085]" />}
-          // suffix={
-          //   <div>
-          //     <div className="border-l-2 text-sm text-[#1D2939] font-normal border-[#D0D5DD]">
-          //       <Dropdown
-          //         className="border-none"
-          //         overlay={categoryMenu}
-          //         trigger={["hover"]}
-          //       >
-          //         <Button>{t('Category')} <DownOutlined /></Button>
-          //       </Dropdown>
-          //     </div>
-          //   </div>
-          // }
+        // suffix={
+        //   <div>
+        //     <div className="border-l-2 text-sm text-[#1D2939] font-normal border-[#D0D5DD]">
+        //       <Dropdown
+        //         className="border-none"
+        //         overlay={categoryMenu}
+        //         trigger={["hover"]}
+        //       >
+        //         <Button>{t('Category')} <DownOutlined /></Button>
+        //       </Dropdown>
+        //     </div>
+        //   </div>
+        // }
         />
       </div>
 
@@ -148,31 +150,35 @@ const dispatch=useDispatch();
         </Link> */}
 
         {
-            user ? (
-             <div>
-              <Button className="mr-2">
-                <UserOutlined />
-                <strong>
+          user ? (
+            <div>
+              <Button className="mr-2 text-[16px] font-semibold text-[#475467] cursor-pointer">
+                <div>
+                  {
+                    user?.image ? <Avatar src={imageUrl + user?.image} size={28} /> : <UserOutlined />
+                  }
+                </div>
+                <span >
                   {user?.name}
-                </strong>
+                </span>
               </Button>
-               <span onClick={handleLogout}  className="text-[16px] font-semibold text-[#475467] cursor-pointer">
+              <Button onClick={handleLogout} className="text-[16px] font-semibold text-[#475467] cursor-pointer">
                 {t('LogOut')}
-              </span>
-             </div>
-            ) : (
-              <div>
-                   <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
-            {t('LogIn')}
-          </Link>
-          <Link href={"/auth/signup"}>
-            <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5 ml-4" type="primary">
-              {t('Sign Up')}
-            </Button>
-          </Link>
-              </div>
-            )
-          }
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
+                {t('LogIn')}
+              </Link>
+              <Link href={"/auth/signup"}>
+                <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5 ml-4" type="primary">
+                  {t('Sign Up')}
+                </Button>
+              </Link>
+            </div>
+          )
+        }
 
         <Button onClick={showModal} size="large">
           <GlobalOutlined />
@@ -186,33 +192,33 @@ const dispatch=useDispatch();
 
       {/* Modal for language selection */}
       <Modal
- 
-  visible={isModalVisible}
-  onCancel={handleCancel}
-  footer={null}
->
-  <h2 className="text-lg font-semibold mb-4" >{t("Choose Your Preferred Language")}</h2>
-  <p className="mb-4 text-sm text-gray-500">
-    {t("Select a language from the dropdown to change the language of the website.")}
-  </p>
-  <Select
-  className="h-[44px] "
-    placeholder={t("Select Language")}
-    value={language}
-    style={{ width: "100%", marginBottom: "1rem" }}
-    onChange={handleChange}
-  >
-    <Select.Option className=" mb-2" value="en">{t("English")}</Select.Option>
-    <Select.Option value="gr">{t("Greek")}</Select.Option>
-    {/* Add other languages as needed */}
-  </Select>
-  <p className=" text-sm text-gray-500">
-    {t("Note: Changing the language will refresh the page to apply your selection.")}
-  </p>
-  <p className="mb-4 text-sm text-gray-500">
-    {t("If you encounter any issues, please try reloading the page manually.")}
-  </p>
-</Modal>
+
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <h2 className="text-lg font-semibold mb-4" >{t("Choose Your Preferred Language")}</h2>
+        <p className="mb-4 text-sm text-gray-500">
+          {t("Select a language from the dropdown to change the language of the website.")}
+        </p>
+        <Select
+          className="h-[44px] "
+          placeholder={t("Select Language")}
+          value={language}
+          style={{ width: "100%", marginBottom: "1rem" }}
+          onChange={handleChange}
+        >
+          <Select.Option className=" mb-2" value="en">{t("English")}</Select.Option>
+          <Select.Option value="gr">{t("Greek")}</Select.Option>
+          {/* Add other languages as needed */}
+        </Select>
+        <p className=" text-sm text-gray-500">
+          {t("Note: Changing the language will refresh the page to apply your selection.")}
+        </p>
+        <p className="mb-4 text-sm text-gray-500">
+          {t("If you encounter any issues, please try reloading the page manually.")}
+        </p>
+      </Modal>
 
       {/* Drawer for mobile menu */}
       <Drawer
@@ -239,14 +245,14 @@ const dispatch=useDispatch();
               </Link>
             ) : (
               <div>
-                   <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
-            {t('LogIn')}
-          </Link>
-          <Link href={"/auth/signup"}>
-            <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5" type="primary">
-              {t('Sign Up')}
-            </Button>
-          </Link>
+                <Link href={"/auth/login"} className="text-[16px] font-semibold text-[#475467]">
+                  {t('LogIn')}
+                </Link>
+                <Link href={"/auth/signup"}>
+                  <Button className="text-[#FFFFFF] font-semibold text-[16px] p-5" type="primary">
+                    {t('Sign Up')}
+                  </Button>
+                </Link>
               </div>
             )
           }

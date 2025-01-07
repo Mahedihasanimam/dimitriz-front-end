@@ -9,6 +9,20 @@ const CourseApi = api.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+    getCourseByCategory: builder.query({
+      query: () => ({
+        url: `/course/get-all-courses-by-category`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
+    getFiltaredCourseBycategory: builder.query({
+      query: (category) => ({
+        url: `/course/get-all-courses?category=${category}`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
 
 
     getallCategory: builder.query({
@@ -44,4 +58,6 @@ export const {
   useGetallCourseQuery,
   useGetallCategoryQuery,
   useGetSingleCourseByidQuery,
+  useGetCourseByCategoryQuery,
+  useGetFiltaredCourseBycategoryQuery,
 } = CourseApi;

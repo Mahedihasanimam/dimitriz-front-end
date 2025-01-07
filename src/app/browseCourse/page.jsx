@@ -7,7 +7,9 @@ import { SearchOutlined, DownOutlined,RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import CourseCard from "@/components/ui/CourseCard";
 import { useTranslations } from "next-intl";
-import { useGetallCourseQuery } from "@/redux/features/course/CourseApi";
+import { useGetCourseByCategoryQuery } from "@/redux/features/course/CourseApi";
+
+
 
 const page = () => {
   const t=useTranslations()
@@ -130,9 +132,11 @@ const page = () => {
           "category": "All courses"
         }
       ]
-      const {data,isLoading}=useGetallCourseQuery();
+      const {data,isLoading}=useGetCourseByCategoryQuery();
 
-      
+     
+
+
   const categoryMenu = (
     <Menu>
       <Menu.Item key="1">{t("Category")} 1</Menu.Item>
@@ -212,61 +216,47 @@ const page = () => {
 
         
         {/* art and design menu card  */}
-        <div className="flex  justify-between pb-[32px] pt-[82px] ">
+       
+
+
+         {/* Course cards for each category */}
+       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
+              {data?.data?.result?.map((item) => (
+                <CourseCard
+                  key={item.id}
+                 data={item}
+                />
+              ))}
+        </div>
+
+<div>
+
+        {data?.data &&
+      Object.entries(data?.data).map(([category, items]) => (
+        <div key={category} className="mb-8">
+          {/* Render the category name */}
+           <div className="flex  justify-between pb-[32px] pt-[82px] ">
           <h1 className="lg:text-[36px] md:text-[28px] text-18px  font-bold leading-none text-2xl text-[#101828] font-Merriweather text-start ">
             {t("Art & Design")}
           </h1>
          <div>
-         <Link className=" font-bold border-b-2 pb-0 border-[#1D2939] text-[#000000]" href={`/browseCourse/category/ArtandDesign`}>{t("View all")}  <RightOutlined className="font-bold pl-1" /> </Link>
+         <Link className=" font-bold border-b-2 pb-0 border-[#1D2939] text-[#000000]" href={`/browseCourse/category/items?browse=${category}`}>{t("View all")}  <RightOutlined className="font-bold pl-1" /> </Link>
          </div>
-        </div>
-         {/* Course cards for each category */}
-       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
-              {data?.data?.result.map((item) => (
-                <CourseCard
-                  key={item.id}
-                 data={item}
-                />
-              ))}
         </div>
 
-        {/* programming menu card  */}
-        <div className="flex  justify-between pb-[32px] pt-[82px] ">
-          <h1 className="lg:text-[36px] md:text-[28px] text-18px   font-bold leading-none text-2xl text-[#101828] font-Merriweather text-start ">
-          {t("Programing")}
-          </h1>
-         <div>
-         <Link className=" font-bold border-b-2 pb-0 border-[#1D2939] text-[#000000]" href={`/browseCourse/category/Programing`}>{t("View all")}  <RightOutlined className="font-bold pl-1" /> </Link>
-         </div>
-        </div>
-         {/* Course cards for each category */}
-       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
-              {data?.data?.result.map((item) => (
-                <CourseCard
-                  key={item.id}
-                 data={item}
-                />
-              ))}
-        </div>
 
-        {/* Sales & Marketing menu card  */}
-        <div className="flex  justify-between pb-[32px] pt-[82px] ">
-          <h1 className="lg:text-[36px] md:text-[28px] text-18px   font-bold leading-none text-2xl text-[#101828] font-Merriweather text-start ">
-          {t("Sales & Marketing")}
-          </h1>
-         <div>
-         <Link className=" font-bold border-b-2 pb-0 border-[#1D2939] text-[#000000]" href={`/browseCourse/category/ASales&Marketing`}>{t("View all")}  <RightOutlined className="font-bold pl-1" /> </Link>
-         </div>
+          {/* Render the course cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
+
+            {items?.map((item) => (
+              <CourseCard key={item.id} data={item} />
+            ))}
+          </div>
         </div>
-         {/* Course cards for each category */}
-       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4 pb-[82px]">
-             {data?.data?.result.map((item) => (
-                <CourseCard
-                  key={item.id}
-                 data={item}
-                />
-              ))}
-        </div>
+      ))}
+</div>
+
+     
 
         
       </div>
