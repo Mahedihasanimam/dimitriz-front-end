@@ -132,30 +132,30 @@ const page = ({ params }) => {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleAddToCart = (data) => {
+  // const handleAddToCart = (data) => {
 
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const existingItem = cartItems.find(item => item.id === id);
-    if (existingItem) {
-      return messageApi.open({
-        type: 'warning',
-        content: 'Item already in cart',
-      })
-    } else {
-      cartItems.push(data);
-    }
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  //   const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+  //   const existingItem = cartItems.find(item => item.id === id);
+  //   if (existingItem) {
+  //     return messageApi.open({
+  //       type: 'warning',
+  //       content: 'Item already in cart',
+  //     })
+  //   } else {
+  //     cartItems.push(data);
+  //   }
+  //   localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
 
 
-    messageApi.open({
-      type: 'success',
-      content: 'add to cart success',
-    });
+  //   messageApi.open({
+  //     type: 'success',
+  //     content: 'add to cart success',
+  //   });
 
-    console.log("Added to cart");
+  //   console.log("Added to cart");
 
-  };
+  // };
 
 
   console.log('data----------------------------------------------', data)
@@ -333,12 +333,12 @@ const page = ({ params }) => {
                   >
                     €{data?.data?.price} {t("Buy Now")}
                   </Button>
-                  <button
+                  {/* <button
                     onClick={() => handleAddToCart(data?.data)}
                     className=" bg-transparent font-semibold px-6 pt-3 text-[#475467] block mx-auto"
                   >
                     {t("Add to Cart")}
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

@@ -21,6 +21,7 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, setUser } from "@/redux/features/users/userSlice";
 import { UserContext } from "@/lib/UserContext";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
@@ -71,10 +72,28 @@ const dispatch=useDispatch();
   };
   const user = useSelector((state) => state.user.user);
   const handleLogout = () => {
-    logoutUser();
-    dispatch(clearUser());
-    Cookies.remove("token");
-    router.push("/auth/login");
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, logout!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+
+        logoutUser();
+        dispatch(clearUser());
+        Cookies.remove("token");
+        router.push("/auth/login");
+        Swal.fire("Logged out!", "You have been logged out.", "success");
+      }
+    })
+
+
   };
 
   const categoryMenu = (
@@ -99,21 +118,21 @@ const dispatch=useDispatch();
       <div className="hidden w-full max-w-lg lg:flex items-center space-x-2 px-2">
         <Input
           placeholder="Search for course"
-          className="w-full text-[#667085] text-[16px]"
+          className="w-full text-[#667085] text-[16px] h-[44px]"
           prefix={<SearchOutlined size={15} className="text-[#667085]" />}
-          suffix={
-            <div>
-              <div className="border-l-2 text-sm text-[#1D2939] font-normal border-[#D0D5DD]">
-                <Dropdown
-                  className="border-none"
-                  overlay={categoryMenu}
-                  trigger={["hover"]}
-                >
-                  <Button>{t('Category')} <DownOutlined /></Button>
-                </Dropdown>
-              </div>
-            </div>
-          }
+          // suffix={
+          //   <div>
+          //     <div className="border-l-2 text-sm text-[#1D2939] font-normal border-[#D0D5DD]">
+          //       <Dropdown
+          //         className="border-none"
+          //         overlay={categoryMenu}
+          //         trigger={["hover"]}
+          //       >
+          //         <Button>{t('Category')} <DownOutlined /></Button>
+          //       </Dropdown>
+          //     </div>
+          //   </div>
+          // }
         />
       </div>
 
@@ -122,9 +141,12 @@ const dispatch=useDispatch();
         <Link href="/becomeInstructor" className="text-sm pl-2">
           {t('Become an Instructor')}
         </Link>
-        <Link className="cursor-pointer" href={"/shoppingcart"}>
+
+        {/* SHOPING CART OUTLINE ---------------------------------------------------------------------------------- */}
+        {/* <Link className="cursor-pointer" href={"/shoppingcart"}>
           <ShoppingCartOutlined className="text-2xl" />
-        </Link>
+        </Link> */}
+
         {
             user ? (
              <div>

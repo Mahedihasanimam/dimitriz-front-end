@@ -149,7 +149,9 @@ const page = () => {
         className="w-full min-h-[407px] bg-cover py-6"
       >
         <div className="lg:pt-28 md:pt-28 py-12 px-6">
-          <div className="flex s-mobile:py-6 l-mobile:flex-wrap m-mobile:flex-wrap s-mobile:flex-wrap items-center justify-between max-w-2xl mx-auto ">
+
+
+          {/* <div className="flex s-mobile:py-6 l-mobile:flex-wrap m-mobile:flex-wrap s-mobile:flex-wrap items-center justify-between max-w-2xl mx-auto ">
             <div className=" lg:my-8 md:my-8 my-2 ">
 
               <div className="xl:flex lg:flex flex-wrap items-center space-x-2 pr-4 s-mobile:pr-[8px] pl-4 s-mobile:pl-[8px]  xl:border-r-2 lg:border-r-2 md:border-r-2 border-white">
@@ -175,28 +177,31 @@ const page = () => {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
+
+
+
           <div className=" w-full max-w-3xl  mx-auto flex items-center space-x-2">
             <Input
               placeholder="Search for course"
               className="w-full h-[57px] text-[#667085] text-[16px] px-4"
               prefix={<SearchOutlined size={15} className="text-[#667085]" />} // Single element for the left icon
-              suffix={
-                // Wrap inside a div
-                <div>
-                  <div className="border-l-2  text-[#1D2939] font-normal border-[#D0D5DD]">
-                    <Dropdown
-                      className="border-none"
-                      overlay={categoryMenu}
-                      trigger={["hover"]}
-                    >
-                      <Button className="text-lg">
-                      {t("Category")} <DownOutlined className="text-lg" />{" "}
-                      </Button>
-                    </Dropdown>
-                  </div>
-                </div>
-              }
+              // suffix={
+              //   // Wrap inside a div
+              //   <div>
+              //     <div className="border-l-2  text-[#1D2939] font-normal border-[#D0D5DD]">
+              //       <Dropdown
+              //         className="border-none"
+              //         overlay={categoryMenu}
+              //         trigger={["hover"]}
+              //       >
+              //         <Button className="text-lg">
+              //         {t("Category")} <DownOutlined className="text-lg" />{" "}
+              //         </Button>
+              //       </Dropdown>
+              //     </div>
+              //   </div>
+              // }
             />
           </div>
         </div>

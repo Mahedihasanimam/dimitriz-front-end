@@ -13,7 +13,7 @@ const CourseApi = api.injectEndpoints({
 
     getallCategory: builder.query({
       query: () => ({
-        url: `/category/get-all-categories`,
+        url: `/course/get-all-categories`,
         method: "GET",
       }),
       providesTags: ["category"],
