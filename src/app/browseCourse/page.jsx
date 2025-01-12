@@ -10,7 +10,6 @@ import { useTranslations } from "next-intl";
 import { useGetCourseByCategoryQuery } from "@/redux/features/course/CourseApi";
 
 
-
 const page = () => {
   const t=useTranslations()
     const coursemenu =[
@@ -133,17 +132,6 @@ const page = () => {
         }
       ]
       const {data,isLoading}=useGetCourseByCategoryQuery();
-
-     
-
-
-  const categoryMenu = (
-    <Menu>
-      <Menu.Item key="1">{t("Category")} 1</Menu.Item>
-      <Menu.Item key="2">{t("Category")} 2</Menu.Item>
-      <Menu.Item key="3">{t("Category")} 3</Menu.Item>
-    </Menu>
-  );
 
   return (
     <div>

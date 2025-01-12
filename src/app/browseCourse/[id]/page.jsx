@@ -101,6 +101,8 @@ const page = ({ params }) => {
       category: "All courses",
     },
   ];
+
+
   const coursetwo = [
     {
       id: 8,
@@ -129,9 +131,14 @@ const page = ({ params }) => {
       category: "All courses",
     },
   ];
-
   const [messageApi, contextHolder] = message.useMessage();
 
+
+
+
+
+
+  
   // const handleAddToCart = (data) => {
 
   //   const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -180,7 +187,6 @@ const page = ({ params }) => {
                   <span className="text-yellow-500 text-sm flex items-center justify-center">
                     <Rate
                       className="text-xl"
-                      allowHalf
                       count={1}
                       defaultValue={data?.data?.averageRating}
                     />{" "}
@@ -604,42 +610,7 @@ const page = ({ params }) => {
             </div>
 
             {/* about section -------------------------------------------------------------- */}
-            <div className="bg-white my-12   xl:max-w-2xl lg:max-w-xl w-full  relative">
-              <h2 className="text-lg font-semibold text-[#475467] mb-4">
-                About
-              </h2>
-              <div
-                className={`relative ${!isExpanded ? "max-h-40 overflow-hidden" : ""
-                  }`}
-              >
-                <p className="text-[#475467] mb-4">
-                  I'm Angela, I'm a developer with a passion for teaching. I'm
-                  the lead instructor at the London App Brewery, London's
-                  leading Programming Bootcamp. I've helped hundreds of
-                  thousands of students learn to code and change their lives by
-                  becoming a developer. I've been invited by companies such as
-                  Twitter, Facebook and Google to teach their employees
-                </p>
-                <p className="text-[#475467]">
-                  My first foray into programming was when I was just 12 years
-                  old, wanting to build my own Space Invader game. Since then,
-                  I've made hundred of websites, apps and games. But most
-                  importantly, I realised that my greatest passion is teaching.
-                </p>
-
-                {/* Apply the gradient blur at the bottom when not expanded */}
-                {!isExpanded && (
-                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white to-transparent pointer-events-none"></div>
-                )}
-              </div>
-
-              <button
-                className="text-blue-500 mt-4"
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                {isExpanded ? "Show less" : "Show more"}
-              </button>
-            </div>
+       
 
             {/* others courses section here-------------------------------------------- */}
             <div className="bg-white lg:mt-32 md:mt-28 mt-12 xl:max-w-2xl lg:max-w-xl w-full">

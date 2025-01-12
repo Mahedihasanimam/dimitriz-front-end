@@ -2,7 +2,7 @@
 
 import React from "react";
 import CourseCard from "../ui/CourseCard";
-import { Button, Tabs } from "antd";
+import { Button, Skeleton, Tabs } from "antd";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useGetallCourseQuery } from "@/redux/features/course/CourseApi";
@@ -16,8 +16,7 @@ const t=useTranslations()
 
 
 
-  if(isLoading) return <div>Loading...</div>;
-console.log('data',data?.data?.result);
+
 
 //   FILTER COURSES BY CATEGORY
 const categories = ["All Categories", ...new Set(data?.data?.result?.map((item) => item.category))];
@@ -39,7 +38,19 @@ const categories = ["All Categories", ...new Set(data?.data?.result?.map((item) 
       </h1>
 
       {/* Tabs for categories */}
-      <Tabs
+
+
+      {
+        isLoading ? <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
+          {
+            Array.from({ length: 6 }).map(item =>{
+              return(
+                <Skeleton active paragraph={{ rows: 1 }} />
+              )
+
+            })
+          }
+        </div> : <Tabs
         defaultActiveKey="1"
         activeKey={activeKey}
         onChange={handleTabChange}
@@ -47,6 +58,7 @@ const categories = ["All Categories", ...new Set(data?.data?.result?.map((item) 
           borderBottom: "none", 
         }}
       >
+        
         {categories.map((category, index) => (
           <Tabs.TabPane
             tab={
@@ -82,6 +94,7 @@ const categories = ["All Categories", ...new Set(data?.data?.result?.map((item) 
           </Tabs.TabPane>
         ))}
       </Tabs>
+      }
 
       {/* Custom styles */}
     </div>
