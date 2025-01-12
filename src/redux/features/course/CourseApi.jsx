@@ -40,6 +40,13 @@ const CourseApi = api.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+getcourseByInstructorId: builder.query({
+      query: (id) => ({
+        url: `/course/get-course-by-instructor-id/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
 
     // getreviewByproductid: builder.query({
     //   query: (id) => ({
@@ -60,4 +67,6 @@ export const {
   useGetSingleCourseByidQuery,
   useGetCourseByCategoryQuery,
   useGetFiltaredCourseBycategoryQuery,
+  useGetcourseByInstructorIdQuery,
+  
 } = CourseApi;

@@ -26,7 +26,7 @@ import Link from "next/link";
 import CourseCard from "@/components/ui/CourseCard";
 import { useRouter, useSearchParams } from "next/navigation"; // Correct import
 import { useTranslations } from "next-intl";
-import { useGetSingleCourseByidQuery } from "@/redux/features/course/CourseApi";
+import { useGetcourseByInstructorIdQuery, useGetSingleCourseByidQuery } from "@/redux/features/course/CourseApi";
 import { imageUrl } from "@/redux/baseApi";
 // import coursevideo from '/public/video/video1.mp4'
 const page = ({ params }) => {
@@ -37,7 +37,14 @@ const page = ({ params }) => {
   const id = params?.id
 
   const { data, isLoading } = useGetSingleCourseByidQuery(id);
+  console.log('instructor id',data?.data?.instructor?._id)
+  console.log('instructor id',data)
   console.log(id)
+
+  const {data:course}=useGetcourseByInstructorIdQuery(data?.data?.instructor?._id)
+
+
+  console.log('course', course?.data)
   const { Panel } = Collapse;
   const panels = [
     { id: "01", title: "Getting started", time: "02:30 min", isVideo: true },
@@ -85,52 +92,7 @@ const page = ({ params }) => {
     },
   ];
 
-  // FAKE JSON DATA FOR DEMO PURPOSES ONLY
-  const courseone = [
-    {
-      id: 1,
-      instructor: "John Michael",
-      rating: 4.7,
-      reviews: 3242,
-      courseTitle: "Product Management Basic - Course",
-      duration: "40 Hours",
-      students: 176,
-      price: "€ 29.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/17pL5Qj/caourse1.png",
-      category: "All courses",
-    },
-  ];
-
-
-  const coursetwo = [
-    {
-      id: 8,
-      instructor: "John Michael",
-      rating: 4.7,
-      reviews: 3242,
-      courseTitle: "Product Analytics for Beginners",
-      duration: "48 Hours",
-      students: 220,
-      price: "€ 33.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/17pL5Qj/caourse1.png",
-      category: "Sports",
-    },
-    {
-      id: 9,
-      instructor: "John Michael",
-      rating: 4.6,
-      reviews: 3100,
-      courseTitle: "Building Digital Products",
-      duration: "55 Hours",
-      students: 210,
-      price: "€ 37.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/vPfYHr7/category1.png",
-      category: "All courses",
-    },
-  ];
+ 
   const [messageApi, contextHolder] = message.useMessage();
 
 
@@ -138,7 +100,7 @@ const page = ({ params }) => {
 
 
 
-  
+
   // const handleAddToCart = (data) => {
 
   //   const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -165,10 +127,7 @@ const page = ({ params }) => {
   // };
 
 
-  console.log('data----------------------------------------------', data)
 
-
-  console.log('data----------------------------------------------', id)
 
   return (
     <div>
@@ -615,53 +574,23 @@ const page = ({ params }) => {
             {/* others courses section here-------------------------------------------- */}
             <div className="bg-white lg:mt-32 md:mt-28 mt-12 xl:max-w-2xl lg:max-w-xl w-full">
               <h1 className="text-3xl font-bold mb-8 text-[#000000] font-Merriweather">
-                Other courses from John Doe (
+                Other courses from {data?.data?.instructor?.name} (
                 <span className="text-2xl text-[#1D2939] font-Merriweather">
-                  253
+                 {course?.data?.length}
                 </span>
                 )
               </h1>
 
-              <div className="">
-                {courseone.map((item) => (
-                  <CourseCard
-                    key={item.id}
-                    courseimage={item.imageLink}
-                    courseTitle={item.courseTitle}
-                    instructor={item.instructor}
-                    rating={item.rating}
-                    price={item.price}
-                    reviews={item.reviews}
-                    duration={item.duration}
-                    students={item.students}
-                    enrollLink={item.id}
-                  />
-                ))}
-              </div>
-
+         
               <div className="grid grid-cols-1  md:grid-cols-2 mt-6 lg:grid-cols-2 gap-4">
-                {coursetwo.map((item) => (
+              {course?.data?.map((item) => (
                   <CourseCard
                     key={item.id}
-                    courseimage={item.imageLink}
-                    courseTitle={item.courseTitle}
-                    instructor={item.instructor}
-                    rating={item.rating}
-                    price={item.price}
-                    reviews={item.reviews}
-                    duration={item.duration}
-                    students={item.students}
-                    enrollLink={item.id}
+                  data={item}
                   />
                 ))}
               </div>
-              <Link
-                href={" #"}
-                className="inline-flex items-center text-[#475467] border-b-2 border-[#475467] mt-8 text-[16px] font-semibold "
-              >
-                {t("Show all reviews")}
-                <ArrowUpOutlined className="rotate-45 text-xl pl-2" />
-              </Link>
+             
             </div>
           </div>
         </div>
