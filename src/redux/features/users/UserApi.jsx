@@ -12,6 +12,16 @@ const userApi = api.injectEndpoints({
     }),
 
 
+    registerasInstructor: builder.mutation({
+      query: (user) => ({
+        url: "/users/auth/signup-as-instructor",
+        method: "POST",
+        body: user,
+      }),
+      invalidatesTags: ["user"],
+    }),
+
+
 
 
 
@@ -195,5 +205,7 @@ export const {
   useLeaveAreviewMutation,
   useGetAbotUsQuery,
   useUpdatePasswordMutation,
-  useGetadminProfileQuery
+  useGetadminProfileQuery,
+  useRegisterasInstructorMutation,
+  
 } = userApi;

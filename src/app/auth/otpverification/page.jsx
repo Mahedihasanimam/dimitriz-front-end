@@ -1,16 +1,53 @@
 "use client";
-import React, { useState } from "react";
-import { Form, Input, Button } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, message } from "antd";
 import AuthLayout from "@/components/AuthLayout";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useForgetpasswordMutation, useOtpVerifyMutation } from "@/redux/features/users/UserApi";
 
-const Page = () => {
+const Page = ({ params }) => {
+  const searchParams = useSearchParams();
+  const [email, setEmail] = useState("");
+  const [verifyEmail] = useOtpVerifyMutation();
+  const [forgetpassword] = useForgetpasswordMutation();
   const [otp, setOtp] = useState(["", "", "", ""]);
-
-  const onFinish = (values) => {
+const router = useRouter()
+  const onFinish = async(values) => {
     const otpValue = otp.join(""); 
-    console.log("Success:", { ...values, otp: otpValue });
+    console.log(email);
+    if (otpValue.length === 4) {
+      try {
+        const response = await verifyEmail({ emailVerifyCode: otpValue, email });
+        console.log('response', response, 'email', email , 'otp', otpValue);
+        if (response?.data?.success) {
+          router.push(`/auth/createNewPassword?email=${encodeURIComponent(email)}`);
+          message.success(response?.data?.message);
+        }
+        if (response?.error) {
+          message.error(response?.error?.data?.message);
+        }
+      } catch (error) {
+        message.error(error?.data?.message);
+      }
+    }
   };
+
+
+ const handlesendagain = async() => {
+  try {
+    const response = await forgetpassword({ email });
+    console.log(response)
+    if (response?.data?.success) {
+      message.success(response?.data?.message);
+    }
+    if (response?.error) {
+      message.error(response?.error?.data?.error);
+    }
+  } catch (error) {
+    message.error(error?.data?.error);
+  }
+ }
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -25,6 +62,12 @@ const Page = () => {
       document.getElementById(`otpInput-${index + 1}`).focus();
     }
   };
+  useEffect(() => {
+    const queryEmail = searchParams.get("email");
+    if (queryEmail) {
+      setEmail(queryEmail);
+    }
+  }, [searchParams]);
 
   return (
     <AuthLayout>
@@ -32,7 +75,7 @@ const Page = () => {
         <div className="text-start">
           <h1 className="text-3xl font-bold mb-4">OTP verification</h1>
           <h3 className="text-[#475467] text-[16px]">
-            We’ve sent you a verification code to <br /> alim...@gmail.com
+            We’ve sent you a verification code to <br /> {email}
           </h3>
         </div>
         <div className="lg:max-w-lg w-full mx-auto pt-8 ">
@@ -66,7 +109,7 @@ const Page = () => {
               </div>
 
               <Form.Item className="pt-6">
-               <Link href="/auth/login">
+             
                <Button
                   className="text-[#FFFFFF] text-[16px] font-semibold p-6"
                   size="large"
@@ -75,17 +118,17 @@ const Page = () => {
                   block
                 >
                   Submit
-                </Button></Link>
+                </Button>
               </Form.Item>
             </Form>
           </div>
           <div className="text-start lg:mt-4">
           Didn’t received code?{" "}
-          <Link href="#">
-            <span className="text-[#195671] font-semibold hover:underline">
+        
+            <span onClick={handlesendagain} className="text-[#195671] font-semibold hover:underline">
             Send again
             </span>
-          </Link>
+         
         </div>
         </div>
       </div>

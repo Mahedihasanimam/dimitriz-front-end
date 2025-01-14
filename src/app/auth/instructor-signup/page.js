@@ -1,16 +1,42 @@
 "use client";
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import AuthLayout from "@/components/AuthLayout";
 import Link from "next/link";
 import Image from "next/image";
 import signupimage from "/public/images/logo.png";
 import googleicon from "/public/images/google.png";
 import SignupCarousel from "@/components/utils/SignupCarosel";
+import { useRegisterasInstructorMutation } from "@/redux/features/users/UserApi";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { setUser } from "@/redux/features/users/userSlice";
+import { useDispatch } from "react-redux";
 
 const Signup = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+
+  const [registerasInstructor]=useRegisterasInstructorMutation();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const onFinish = async(values) => {
+    try {
+      const response = await registerasInstructor(values);
+      console.log('response', response);
+      if (response?.data?.success) {
+        message.success(response?.data?.data?.message || response?.data?.message);
+        Cookies.set("token", response?.data?.data?.token);
+        dispatch(setUser(response?.data?.data?.user));
+        router.push("/");
+      }
+
+      if(response?.error){
+        message.error(response?.error?.data?.message );
+      }
+
+    } catch (error) {
+      console.log('error', error);
+      message.error(error?.data?.message );
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -91,14 +117,14 @@ const Signup = () => {
               </Form.Item>
 
               <Form.Item className=" min-[2035px]:w-[500px] min-[2035px]:h-[50px] min-[375px]:w-[330px] min-[320px]:w-[290px]  w-[360px] h-[44px]">
-                <Button
+                {/* <Button
                   block
                   className="btn-google text-[#344054] min-[375px]:w-[330px]  text-[16px] font-semibold p-6 hover:bg-[#344054] hover:text-[#FFFFFF]"
                   style={{ marginBottom: "10px" }}
                 >
                   <Image src={googleicon} width={24} height={24} alt="Google Icon" />
                   Sign up with Google
-                </Button>
+                </Button> */}
               </Form.Item>
             </Form>
             <div className="lg:mt-2 flex px-8">

@@ -148,7 +148,7 @@ const signIn = () => {
             </Form.Item>
 
             {/* Google Sign In Button */}
-            <Form.Item>
+            {/* <Form.Item>
               <Button
                 block
                 className="btn-google text-[#344054] text-[16px] font-semibold p-6 hover:border-[#344054] hover:bg-[#344054] hover:text-[#FFFFFF]"
@@ -157,7 +157,7 @@ const signIn = () => {
                 <Image src={googleicon} width={24} height={24} />
                 Log in with Google
               </Button>
-            </Form.Item>
+            </Form.Item> */}
           </Form>
         </div>
         <div className="text-center lg:mt-4">

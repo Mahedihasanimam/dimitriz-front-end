@@ -237,7 +237,8 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
 {/* search modal */}
 
       <Modal
-  width={1000}
+  width={1500}
+  
         visible={searchmodal}
         onCancel={handlesearchCancel}
         footer={null}

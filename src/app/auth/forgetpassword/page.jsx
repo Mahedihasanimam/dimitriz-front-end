@@ -1,17 +1,35 @@
 "use client";
 import React from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, message } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import AuthLayout from "@/components/AuthLayout";
 import Link from "next/link";
 import Image from "next/image";
 import logoimage from "/public/images/logoimage.png";
 import googleicon from "/public/images/google.png";
+import { useForgetpasswordMutation } from "@/redux/features/users/UserApi";
+import { useRouter } from "next/navigation";
 const page = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
+  const [forgetpassword, { isLoading }] = useForgetpasswordMutation()
+  const router = useRouter()
+  const onFinish = async (values) => {
+    console.log('Form values:', values)
+    try {
+      const respons = await forgetpassword(values).unwrap()
+      console.log(respons)
+      console.log(respons)
+      if (respons?.success === true) {
+        message.success(respons?.message)
+        router.push(`/auth/otpverification?email=${encodeURIComponent(values?.email)}`)
+      }
+      if(respons?.data?.success === false){
+        message.error(respons?.data?.message)
+      }
+    } catch (error) {
+      console.log(error)
+      message.error(error?.data?.message)
+    }
+  }
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -60,16 +78,18 @@ const page = () => {
               </Form.Item>
 
               <Form.Item>
-              <Link href="/auth/otpverification">
-              <Button
+
+                <Button
                   className="text-[#FFFFFF] text-[16px] font-semibold p-6"
                   size="large"
                   type="primary"
                   htmlType="submit"
                   block
+                  loading={isLoading}
                 >
                   Submit
-                </Button></Link>
+
+                </Button>
               </Form.Item>
             </Form>
           </div>

@@ -17,11 +17,11 @@ import { useRouter } from "next/navigation";
 const Signup = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [registerUser]=useRegisterUserMutation()
-  const onFinish = async(values) => {
+  const [registerUser] = useRegisterUserMutation()
+  const onFinish = async (values) => {
     const alldata = { ...values, role: "user" };
     console.log('allvalue', alldata); // Log alldata here
-    try {  
+    try {
       const response = await registerUser(alldata);
       console.log('response', response);
       if (response?.data?.success) {
@@ -41,7 +41,7 @@ const Signup = () => {
 
     // /auth/signup/intarest
   };
-  
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -112,13 +112,13 @@ const Signup = () => {
               </Form.Item>
 
               <Form.Item className=" min-[2035px]:w-[500px] min-[2035px]:h-[50px] min-[375px]:w-[330px] min-[320px]:w-[290px]  w-[360px] h-[44px]">
-             
-                <Button  className="text-[#FFFFFF] text-[16px] font-semibold p-6" size="" type="primary" htmlType="submit" block>
+
+                <Button className="text-[#FFFFFF] text-[16px] font-semibold p-6" size="" type="primary" htmlType="submit" block>
                   Create account
                 </Button>
-            
-              </Form.Item>
 
+              </Form.Item>
+              {/* 
               <Form.Item className=" min-[2035px]:w-[500px] min-[2035px]:h-[50px] min-[375px]:w-[330px] min-[320px]:w-[290px]  w-[360px] h-[44px]">
                 <Button
                   block
@@ -128,7 +128,7 @@ const Signup = () => {
                   <Image src={googleicon} width={24} height={24} alt="Google Icon" />
                   Sign up with Google
                 </Button>
-              </Form.Item>
+              </Form.Item> */}
             </Form>
             <div className="lg:mt-2 flex px-8">
               <h1 className="text-[16px]"> Already have an account? </h1>
@@ -138,7 +138,6 @@ const Signup = () => {
             </div>
           </div>
         </div>
-
         {/* Right Section (Carousel) */}
         <div className="order-first md:order-last h-screen overflow-hidden md:w-6/12">
           <SignupCarousel />

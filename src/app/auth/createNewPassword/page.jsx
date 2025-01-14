@@ -1,29 +1,65 @@
 "use client";
-import React, { useState } from "react";
-import { Form, Input, Button, Checkbox, Alert } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, Button, Checkbox, Alert, message } from "antd";
 import AuthLayout from "@/components/AuthLayout";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useResetpasswordMutation } from "@/redux/features/users/UserApi";
 
 const page = () => {
     const [alertMessage, setAlertMessage] = useState(null); // State for alert message
   const [alertType, setAlertType] = useState(null);
-  const onFinish = (values) => {
 
-    console.log("Success:", values);
+
+  const router = useRouter()
+  const [resetpassword] = useResetpasswordMutation() 
+  const searchParams = useSearchParams()
+  const [email, setEmail] = useState("");
+  const onFinish = async(values) => {
+
     const newpassword=values.newpassword;
-    const confirmPassword=values.Confirmpassword;
+    const confirmPassword=values.confirmPassword;
     if(newpassword!==confirmPassword){
         setAlertMessage("Passwords do not match");
         setAlertType("error");
+        return
     }else{
-        setAlertMessage("Password created successfully");
-      setAlertType("success");
+       
+      try {
+        const allinfo = {
+          email, // Ensure `email` is defined
+          newPassword: values?.newpassword, // Use lowercase for consistency
+          confirmPassword: values?.confirmPassword,
+        };
+  
+        console.log('Form values:', allinfo)
+  
+  
+        const respons = await resetpassword(allinfo).unwrap();
+        console.log(respons)
+        if (respons?.success === true) {
+          message.success(respons?.message)
+          router.push('/auth/login')
+        }
+        if (respons?.success === false) {
+          message.error(respons?.data?.message)
+        }
+  
+  
+      } catch (error) {
+        console.log(error)
+      }
     }
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
+  useEffect(() => {
+    const queryEmail = searchParams.get("email");
+    if (queryEmail) {
+      setEmail(queryEmail);
+    }
+  }, [searchParams]);
   return (
     <AuthLayout>
       <div className=" max-w-md mx-auto pt-32 px-4">
@@ -80,7 +116,7 @@ const page = () => {
                     Confirm password
                   </label>
                 }
-                name="Confirmpassword"
+                name="confirmPassword"
                 rules={[
                   {
                     required: true,
