@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ClockCircleOutlined,
   UsergroupDeleteOutlined,
@@ -22,62 +22,38 @@ import apple from "/public/images/icons/applepay.svg";
 import google from "/public/images/icons/googlepay.svg";
 import strype from "/public/images/icons/strype.svg";
 import paypal from "/public/images/icons/paypal.svg";
+import { imageUrl } from "@/redux/baseApi";
+import PaymentForm from "@/components/utils/CheckoutForm";
 
 const page = () => {
-  const carditems = [
-    {
-      id: 1,
-      instructor: "John Michael",
-      rating: 4.7,
-      reviews: 3242,
-      courseTitle: "Product Management Basic - Course",
-      duration: "40 Hours",
-      students: 176,
-      price: "€ 29.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/17pL5Qj/caourse1.png",
-      category: "All courses",
-    },
-    {
-      id: 2,
-      instructor: "John Michael",
-      rating: 4.7,
-      reviews: 3242,
-      courseTitle: "Advanced Product Strategy - Course",
-      duration: "45 Hours",
-      students: 150,
-      price: "€ 35.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/xLN7bSQ/category2.png",
-      category: "Graphic Design",
-    },
-    {
-      id: 3,
-      instructor: "John Michael",
-      rating: 4.6,
-      reviews: 2987,
-      courseTitle: "Product Roadmaps for Success",
-      duration: "38 Hours",
-      students: 200,
-      price: "€ 27.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/vPfYHr7/category1.png",
-      category: "UI/UX Design",
-    },
-    {
-      id: 4,
-      instructor: "John Michael",
-      rating: 4.8,
-      reviews: 3500,
-      courseTitle: "Mastering Agile Product Management",
-      duration: "50 Hours",
-      students: 250,
-      price: "€ 40.00",
-      enrollLink: "ENROLL NOW",
-      imageLink: "https://i.ibb.co.com/xLN7bSQ/category2.png",
-      category: "Programming",
-    },
-  ];
+
+  const [cartitems, setcartitems] = useState([]);
+
+
+  console.log('itemssss', cartitems);
+  useEffect(() => {
+    const item = localStorage.getItem('cartItems');
+    if (item) {
+      try {
+        const parsedItem = JSON.parse(item);
+        setcartitems(parsedItem);
+      } catch (error) {
+        console.error('Error parsing cart items:', error);
+        setcartitems([]);
+      }
+    } else {
+      setcartitems([]); // Fallback for missing data
+    }
+  }, []);
+
+  const handleRemoveItem = (id) => {
+    console.log("Removing item with ID:", id);
+    const updatedCart = cartitems.filter((item) => item._id !== id);
+    setcartitems(updatedCart);
+
+    // Update localStorage after removing the item
+    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+  };
   const [form] = Form.useForm();
 
   // Handle form submission
@@ -108,12 +84,13 @@ const page = () => {
           </h1>
         </div>
       ),
-      okText: <Link href="https://dimitriz-dshboard.vercel.app">Go to Dashboard</Link>, // Customize the button text
+      onCancel: 'cancel',
+      okText:" Go to Dashboard", // Customize the button text
       okButtonProps: {
         style: { backgroundColor: '#564FFD', borderColor: '#564FFD', color: '#fff' }, // Customize button styles
       },
     });
-    
+
   };
   return (
     <div className="max-w-[1056px] p-4 mx-auto">
@@ -127,49 +104,49 @@ const page = () => {
             <div className="border p-6 rounded-lg">
               {/* content of payment */}
               <div>
-                {carditems.map((item) => (
+                {cartitems.map((item) => (
                   <div
-                    key={item.id}
-                    className=" w-full xl:flex lg:flex md:flex flex-row pb-8 my-4 bg-white border-b-2 border-dashed border-gray-200 overflow-hidden"
+                    key={item._id}
+                    className="w-full xl:flex lg:flex md:flex flex-row pb-8 my-4 bg-white border-b-2 border-dashed border-gray-200 overflow-hidden"
                   >
-                    {/* COURSE CARD BANNER IMGE HERE */}
                     <Image
-                      className="w-[185px] h-[134px] rounded-xl  object-cover"
-                      src={item.imageLink}
+                      className="w-[185px] h-[134px] rounded-xl object-cover"
+                      src={imageUrl + item?.thumbnailImage}
                       alt="Course"
                       height={500}
                       width={500}
                     />
-                    {/* COURSE CARD DETAILS HERE */}
-                    <div className="lg:px-5 py-2 w-full ">
-                      <div className="flex justify-between items-start w-full ">
+
+                    <div className="lg:px-5 py-2 w-full">
+                      <div className="flex justify-between items-start w-full">
                         <p className="text-sm text-[#475467] mb-2">
                           by{" "}
                           <Link
-                            href={`browseCourse/instructor/${item.id}`}
-                            className=" text-[#1D2939] border-b-2 text-sm font-semibold border-[#1D2939]"
+                            href={`/browseCourse/instructor/${item?.instructor?._id}`}
+                            className="text-[#1D2939] border-b-2 text-sm font-semibold border-[#1D2939]"
                           >
-                            {item.instructor}
+                            {item.instructor?.name}
                           </Link>
                         </p>
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-yellow-500 text-sm">
                             <Rate
+                              disabled
                               allowHalf
-                              count={1}
-                              defaultValue={item.rating}
+                              count={5} // Adjust this if needed
+                              defaultValue={item.averageRating || 0} // Using `averageRating` here
                             />{" "}
                             <span className="text-[#475467] font-bold text-[16px]">
-                              {item.rating}
+                              {item.averageRating}
                             </span>
                           </span>
                           <span className="text-[#475467] font-normal text-sm ml-2">
-                            ({item.reviews})
+                            ({item.reviewCount})
                           </span>
                         </div>
                       </div>
                       <h5 className="text-[16px] font-bold tracking-tight text-[#1D2939] mb-2">
-                        {item.courseTitle}
+                        {item.title}
                       </h5>
                       <div className="flex items-center justify-start text-[#475467] text-sm py-2 border-b border-[#E5E7EB]">
                         <span className="mr-4 flex items-center font-normal">
@@ -178,15 +155,18 @@ const page = () => {
                         </span>
                         <span className="flex items-center font-normal">
                           <UsergroupDeleteOutlined className="text-lg pr-2" />
-                          {item.students} Students
+                          {item.enrolledStudents?.length || 0} Students
                         </span>
                       </div>
                       <div className="flex justify-between items-center py-4">
                         <span className="text-lg font-semibold text-[#000000]">
-                          € 29.00
+                          ${item?.price}
                         </span>
 
-                        <button className="text-sm text-[#B42318] border-b-2 border-[#B42318] font-normal">
+                        <button
+                          className="text-sm text-[#B42318] border-b-2 border-[#B42318] font-normal"
+                          onClick={() => handleRemoveItem(item._id)}
+                        >
                           Remove
                         </button>
                       </div>
@@ -195,18 +175,19 @@ const page = () => {
                 ))}
               </div>
 
+
               <div>
                 <div className="flex items-center justify-between text-[16px] text-[#344054] font-semibold">
                   <h3>Quantity :</h3>
-                  <span>3x</span>
+                  <span> {cartitems.length} x</span>
                 </div>
                 <div className="flex items-center justify-between text-[16px] text-[#344054] font-semibold border-b border-[#E5E7EB] py-4">
                   <h3>Sub-total :</h3>
-                  <span>€87.00</span>
+                  <span>€ {cartitems.reduce((total, item) => total + item.price, 0)}</span>
                 </div>
                 <div className="flex items-center justify-between text-[16px] text-[#344054] font-semibold  py-4">
                   <h3>Total :</h3>
-                  <span>€87.00</span>
+                  <span>€ {cartitems.reduce((total, item) => total + item.price, 0)}</span>
                 </div>
               </div>
             </div>
@@ -229,22 +210,11 @@ const page = () => {
             </div>
 
             {/* Ant Design Form */}
-            <Form
-              form={form}
-              layout="vertical"
-              requiredMark={false}
-              onFinish={onFinish}
+            <div
+     
             >
               {/* Payment Method */}
-              <Form.Item
-                name="paymentMethod"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select a payment method!",
-                  },
-                ]}
-              >
+            
                 <div className="border p-4 rounded-md w-full flex items-center justify-between ">
                   <Radio
                     className="text-[#475467] text-sm font-medium"
@@ -259,8 +229,8 @@ const page = () => {
                     <Image src={card4} className="w-7 h-5 cursor-pointer" />
                   </div>
                 </div>
-              </Form.Item>
-              <Form.Item
+        
+              {/* <Form.Item
                 name="paywith"
                 rules={[
                   {
@@ -283,10 +253,10 @@ const page = () => {
                     <Image src={paypal} className="w-12 h-5 cursor-pointer" />
                   </div>
                 </div>
-              </Form.Item>
+              </Form.Item> */}
 
-              <div className="bg-[#E4E7EC] p-6 rounded-md border ">
-                {/* Name on card */}
+              {/* <div className="bg-[#E4E7EC] p-6 rounded-md border ">
+   
                 <Form.Item
                   name="nameOnCard"
                   label={
@@ -307,7 +277,7 @@ const page = () => {
                   />
                 </Form.Item>
 
-                {/* Card number */}
+       
                 <Form.Item
                   name="cardNumber"
                   label={
@@ -330,7 +300,7 @@ const page = () => {
                 </Form.Item>
 
                 <div className="flex space-x-4">
-                  {/* Expire date */}
+        
                   <Form.Item
                     name="expireDate"
                     label={
@@ -353,7 +323,7 @@ const page = () => {
                     />
                   </Form.Item>
 
-                  {/* CVC */}
+         
                   <Form.Item
                     name="cvc"
                     label={
@@ -375,9 +345,12 @@ const page = () => {
                     />
                   </Form.Item>
                 </div>
-              </div>
+              </div> */}
 
-              {/* Terms */}
+
+              <PaymentForm product={cartitems} />
+
+       
               <p className="text-sm text-[#475467] my-4">
                 By completing your purchase you agree to these{" "}
                 <a href="#" className="text-[#1253BB]">
@@ -387,18 +360,8 @@ const page = () => {
               </p>
 
               {/* Submit button */}
-              <Form.Item>
-                <Button
-                  onClick={success}
-                  className="h-[48px] text-white text-[16px] font-semibold"
-                  type="primary"
-                  htmlType="submit"
-                  block
-                >
-                  Enroll and Pay €87.00
-                </Button>
-              </Form.Item>
-            </Form>
+             
+            </div>
           </div>
         </div>
       </div>

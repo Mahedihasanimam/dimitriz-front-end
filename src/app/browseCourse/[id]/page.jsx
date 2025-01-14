@@ -129,6 +129,27 @@ const page = ({ params }) => {
 
 
 
+  const handlebynow = (data) => {
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const existingItem = cartItems.find(item => item.id === data?._id);
+    if (existingItem) {
+      return messageApi.open({
+        type: 'warning',
+        content: 'Item already in cart',
+      })
+    } else {
+      cartItems.push(data);
+    }
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    console.log("Added to cart");
+
+    router.push('/checkout');
+  };
+
+  
+  
+
   return (
     <div>
       {contextHolder}
@@ -291,6 +312,7 @@ const page = ({ params }) => {
                   </div>
 
                   <Button
+                    onClick={() => handlebynow(data?.data)}
                     type="primary"
                     size="large"
                     block

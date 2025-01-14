@@ -23,6 +23,13 @@ const CourseApi = api.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+    CourseSearch: builder.query({
+      query: (search) => ({
+        url: `/course/get-all-courses?search=${search}`,
+        method: "GET",
+      }),
+      providesTags: ["course"],
+    }),
 
 
     getallCategory: builder.query({
@@ -68,5 +75,6 @@ export const {
   useGetCourseByCategoryQuery,
   useGetFiltaredCourseBycategoryQuery,
   useGetcourseByInstructorIdQuery,
+  useCourseSearchQuery,
   
 } = CourseApi;
