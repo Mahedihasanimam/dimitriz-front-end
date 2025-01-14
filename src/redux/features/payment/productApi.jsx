@@ -4,7 +4,7 @@ const paymentApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createPaymentIntent: builder.mutation({
       query: (data) => ({
-        url: `/create-order`,
+        url: `/payment/create-payment-intent`,
         method: "POST",
         body: data,
       }),
@@ -12,7 +12,7 @@ const paymentApi = api.injectEndpoints({
 
     paymentSuccess: builder.mutation({
       query: (data) => ({
-        url: `/success-payment`,
+        url: `/payment/confirm-payment`,
         method: "POST",
         body: data,
       }),

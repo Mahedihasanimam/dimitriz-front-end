@@ -24,36 +24,14 @@ import strype from "/public/images/icons/strype.svg";
 import paypal from "/public/images/icons/paypal.svg";
 import { imageUrl } from "@/redux/baseApi";
 import PaymentForm from "@/components/utils/CheckoutForm";
+import { useGetSingleCourseByidQuery } from "@/redux/features/course/CourseApi";
 
-const page = () => {
-
-  const [cartitems, setcartitems] = useState([]);
-
-
-  console.log('itemssss', cartitems);
-  useEffect(() => {
-    const item = localStorage.getItem('cartItems');
-    if (item) {
-      try {
-        const parsedItem = JSON.parse(item);
-        setcartitems(parsedItem);
-      } catch (error) {
-        console.error('Error parsing cart items:', error);
-        setcartitems([]);
-      }
-    } else {
-      setcartitems([]); // Fallback for missing data
-    }
-  }, []);
-
-  const handleRemoveItem = (id) => {
-    console.log("Removing item with ID:", id);
-    const updatedCart = cartitems.filter((item) => item._id !== id);
-    setcartitems(updatedCart);
-
-    // Update localStorage after removing the item
-    localStorage.setItem("cartItems", JSON.stringify(updatedCart));
-  };
+const page = ({ params}) => {
+  const { id } = params;
+   
+  const {data}=useGetSingleCourseByidQuery(id)
+console.log('data',data);
+  
   const [form] = Form.useForm();
 
   // Handle form submission
@@ -104,14 +82,14 @@ const page = () => {
             <div className="border p-6 rounded-lg">
               {/* content of payment */}
               <div>
-                {cartitems.map((item) => (
+               
                   <div
-                    key={item._id}
+                    key={data?.data?._id}
                     className="w-full xl:flex lg:flex md:flex flex-row pb-8 my-4 bg-white border-b-2 border-dashed border-gray-200 overflow-hidden"
                   >
                     <Image
                       className="w-[185px] h-[134px] rounded-xl object-cover"
-                      src={imageUrl + item?.thumbnailImage}
+                      src={imageUrl + data?.data?.thumbnailImage}
                       alt="Course"
                       height={500}
                       width={500}
@@ -122,10 +100,10 @@ const page = () => {
                         <p className="text-sm text-[#475467] mb-2">
                           by{" "}
                           <Link
-                            href={`/browseCourse/instructor/${item?.instructor?._id}`}
+                            href={`/browseCourse/instructor/${data?.data?.instructor?._id}`}
                             className="text-[#1D2939] border-b-2 text-sm font-semibold border-[#1D2939]"
                           >
-                            {item.instructor?.name}
+                            {data?.data?.instructor?.name}
                           </Link>
                         </p>
                         <div className="flex items-center justify-between mb-2">
@@ -134,60 +112,60 @@ const page = () => {
                               disabled
                               allowHalf
                               count={5} // Adjust this if needed
-                              defaultValue={item.averageRating || 0} // Using `averageRating` here
+                              defaultValue={data?.data?.averageRating || 0} // Using `averageRating` here
                             />{" "}
                             <span className="text-[#475467] font-bold text-[16px]">
-                              {item.averageRating}
+                              {data?.data?.averageRating}
                             </span>
                           </span>
                           <span className="text-[#475467] font-normal text-sm ml-2">
-                            ({item.reviewCount})
+                            ({data?.data?.reviewCount})
                           </span>
                         </div>
                       </div>
                       <h5 className="text-[16px] font-bold tracking-tight text-[#1D2939] mb-2">
-                        {item.title}
+                        {data?.data?.title}
                       </h5>
                       <div className="flex items-center justify-start text-[#475467] text-sm py-2 border-b border-[#E5E7EB]">
                         <span className="mr-4 flex items-center font-normal">
                           <ClockCircleOutlined className="text-lg pr-2" />
-                          {item.duration} Hours
+                          {data?.data?.duration} Hours
                         </span>
                         <span className="flex items-center font-normal">
                           <UsergroupDeleteOutlined className="text-lg pr-2" />
-                          {item.enrolledStudents?.length || 0} Students
+                          {data?.data?.enrolledStudents?.length || 0} Students
                         </span>
                       </div>
                       <div className="flex justify-between items-center py-4">
                         <span className="text-lg font-semibold text-[#000000]">
-                          ${item?.price}
+                          ${data?.data?.price}
                         </span>
 
-                        <button
+                        {/* <button
                           className="text-sm text-[#B42318] border-b-2 border-[#B42318] font-normal"
                           onClick={() => handleRemoveItem(item._id)}
                         >
                           Remove
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
-                ))}
+        
               </div>
 
 
               <div>
                 <div className="flex items-center justify-between text-[16px] text-[#344054] font-semibold">
                   <h3>Quantity :</h3>
-                  <span> {cartitems.length} x</span>
+                  <span> 1 x</span>
                 </div>
                 <div className="flex items-center justify-between text-[16px] text-[#344054] font-semibold border-b border-[#E5E7EB] py-4">
                   <h3>Sub-total :</h3>
-                  <span>€ {cartitems.reduce((total, item) => total + item.price, 0)}</span>
+                  <span>€ {data?.data?.price}</span>
                 </div>
                 <div className="flex items-center justify-between text-[16px] text-[#344054] font-semibold  py-4">
                   <h3>Total :</h3>
-                  <span>€ {cartitems.reduce((total, item) => total + item.price, 0)}</span>
+                  <span>€ {data?.data?.price}</span>
                 </div>
               </div>
             </div>
@@ -348,7 +326,7 @@ const page = () => {
               </div> */}
 
 
-              <PaymentForm product={cartitems} />
+              <PaymentForm product={data?.data} />
 
        
               <p className="text-sm text-[#475467] my-4">

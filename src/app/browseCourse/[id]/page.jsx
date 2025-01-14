@@ -130,21 +130,8 @@ const page = ({ params }) => {
 
 
   const handlebynow = (data) => {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const existingItem = cartItems.find(item => item.id === data?._id);
-    if (existingItem) {
-      return messageApi.open({
-        type: 'warning',
-        content: 'Item already in cart',
-      })
-    } else {
-      cartItems.push(data);
-    }
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
-    console.log("Added to cart");
-
-    router.push('/checkout');
+    router.push(`/checkout/${data?._id}` );
   };
 
   
