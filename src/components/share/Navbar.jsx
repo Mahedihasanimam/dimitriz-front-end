@@ -23,18 +23,22 @@ import { clearUser, setUser } from "@/redux/features/users/userSlice";
 import { UserContext } from "@/lib/UserContext";
 import Swal from "sweetalert2";
 import { imageUrl } from "@/redux/baseApi";
+import { useCourseSearchQuery } from "@/redux/features/course/CourseApi";
+import CourseCard from "../ui/CourseCard";
 
 const Navbar = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [language, setLanguage] = useState("en"); // Default to 'en'
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchmodal, setSearchModal] = useState(false);
   const t = useTranslations();
   const dispatch = useDispatch();
   const router = useRouter();
   const [getProfile] = useLazyGetProfileQuery();
   const { logoutUser } = useContext(UserContext);
+const [searchtext,setSearchtext] = useState("");
 
-
+const {data:searchdata}=useCourseSearchQuery(searchtext);
   const handlesetUser = async () => {
     const user = await getProfile();
     // console.log(user)
@@ -49,6 +53,12 @@ const Navbar = () => {
   }, []);
 
 
+
+ const handleSearch = (e) => {
+  setSearchtext(e.target.value);
+  handleshowsearchmodal();
+ }
+
   const handleChange = (lang) => {
     if (lang && lang !== language) {
       setLanguage(lang);
@@ -61,9 +71,16 @@ const Navbar = () => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const handleshowsearchmodal = () => {
+    setSearchModal(true);
+  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const handlesearchCancel = () => {
+    setSearchModal(false);
   };
   const showDrawer = () => {
     setDrawerVisible(true);
@@ -97,13 +114,6 @@ const Navbar = () => {
 
   };
 
-  const categoryMenu = (
-    <Menu>
-      <Menu.Item key="1">{t('Category')} 1</Menu.Item>
-      <Menu.Item key="2">{t('Category')} 2</Menu.Item>
-      <Menu.Item key="3">{t('Category')} 3</Menu.Item>
-    </Menu>
-  );
 
   console.log(user);
 
@@ -119,6 +129,7 @@ const Navbar = () => {
       {/* Middle: Search bar with category button (Hidden on small screens) */}
       <div className="hidden w-full max-w-lg lg:flex items-center space-x-2 px-2">
         <Input
+        onPressEnter={handleSearch}
           placeholder="Search for course"
           className="w-full text-[#667085] text-[16px] h-[44px]"
           prefix={<SearchOutlined size={15} className="text-[#667085]" />}
@@ -220,6 +231,30 @@ const Navbar = () => {
         </p>
       </Modal>
 
+
+
+
+{/* search modal */}
+
+      <Modal
+  width={1000}
+        visible={searchmodal}
+        onCancel={handlesearchCancel}
+        footer={null}
+      >
+        
+        <div>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
+            {searchdata?.data?.result?.map((item) => (
+              <CourseCard
+                key={item.id}
+                data={item}
+              />
+            ))}
+          </div>
+        </div>
+      </Modal>
+
       {/* Drawer for mobile menu */}
       <Drawer
         title="Menu"
@@ -228,9 +263,7 @@ const Navbar = () => {
         open={drawerVisible}
       >
         <Input.Search placeholder="Search course" className="mb-4" />
-        <Dropdown overlay={categoryMenu} trigger={["click"]}>
-          <Button className="mb-4">{t('Category')}</Button>
-        </Dropdown>
+  
         <div className="flex flex-col space-y-4">
           <Link href="/becomeInstructor" className="text-sm">
             {t('BecomeInstructor')}
