@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import heroimg from "/public/images/browseheroimg.png";
-import { Button, Dropdown, Menu, Input } from "antd";
+import { Button, Dropdown, Menu, Input, Skeleton } from "antd";
 import { SearchOutlined, DownOutlined, RightOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import CourseCard from "@/components/ui/CourseCard";
@@ -96,9 +96,25 @@ const page = () => {
               </div>
             }
 
+{
+  isLoading ? <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
+  {
+    Array.from({ length: 6 }).map(item =>{
+      return(
+        <Skeleton active paragraph={{ rows: 1 }} />
+      )
 
-            
-          {/* Course cards for each category */}
+    })
+  }
+  {
+    Array.from({ length: 6 }).map(item =>{
+      return(
+        <Skeleton active paragraph={{ rows: 1 }} />
+      )
+
+    })
+  }
+</div> : 
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 lg:grid-cols-3 gap-4">
             {data?.data?.result?.map((item) => (
               <CourseCard
@@ -107,6 +123,9 @@ const page = () => {
               />
             ))}
           </div>
+}
+            
+
 
           <div>
 

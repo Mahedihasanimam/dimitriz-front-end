@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser, setUser } from "@/redux/features/users/userSlice";
 import { UserContext } from "@/lib/UserContext";
 import Swal from "sweetalert2";
-import { imageUrl } from "@/redux/baseApi";
+import { dashboardUrl, imageUrl } from "@/redux/baseApi";
 import { useCourseSearchQuery } from "@/redux/features/course/CourseApi";
 import CourseCard from "../ui/CourseCard";
 
@@ -115,8 +115,24 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
   };
 
 
-  console.log(user);
+  console.log('user in nav -----------',user);
+  console.log('instr5uctor inluce',user?.role?.includes("instructor"));
 
+
+  const userMenu = (
+    <Menu>
+      <Menu.Item key="2">
+       <Link href={`${dashboardUrl}?token=${Cookies.get('token')}`}>{t("User Dashboard")}</Link>
+      </Menu.Item>
+      <Menu.Item key="3">
+       <Link href={`${dashboardUrl}?token=${Cookies.get('token')}`}>{t("Instructor Dashboard")}</Link>
+      </Menu.Item>
+      <Menu.Item danger key="1" onClick={handleLogout}>
+        {t("Logout")}
+      </Menu.Item>
+
+    </Menu>
+  ) 
   return (
     <nav className="w-full p-4 bg-white mx-auto flex justify-between items-center">
       {/* Left Side: Logo */}
@@ -163,6 +179,11 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
         {
           user ? (
             <div>
+              <Dropdown
+                overlay={userMenu}
+                trigger={["hover"]}
+                
+                >
               <Button className="mr-2 text-[16px] font-semibold text-[#475467] cursor-pointer">
                 <div>
                   {
@@ -173,9 +194,10 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
                   {user?.name}
                 </span>
               </Button>
-              <Button onClick={handleLogout} className="text-[16px] font-semibold text-[#475467] cursor-pointer">
+              </Dropdown>
+              {/* <Button onClick={handleLogout} className="text-[16px] font-semibold text-[#475467] cursor-pointer">
                 {t('LogOut')}
-              </Button>
+              </Button> */}
             </div>
           ) : (
             <div>

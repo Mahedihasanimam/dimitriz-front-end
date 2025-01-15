@@ -8,17 +8,14 @@ import { Form, Input, Button, message } from 'antd';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import { useCreatePaymentIntentMutation, usePaymentSuccessMutation } from '@/redux/features/payment/productApi';
+import Cookies from 'js-cookie';
+import { dashboardUrl } from '@/redux/baseApi';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutForm = ({ product }) => {
-
-
-
 console.log('product', product);
-
-
-
+const token = Cookies.get('token');
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -104,7 +101,7 @@ console.log('product', product);
           showConfirmButton: false,
 
         }).then(() => {
-          window.location.href = "https://dimitriz-user-dashboard.vercel.app/";
+          window.location.href = `${dashboardUrl}?token=${token}`;
         });
 
 
@@ -116,10 +113,6 @@ console.log('product', product);
       }
 
     }
-
-
-
-
     setLoading(false);
   };
 
