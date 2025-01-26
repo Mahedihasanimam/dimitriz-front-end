@@ -18,7 +18,7 @@ const t=useTranslations()
       {/* COURSE CARD BANNER IMGE HERE */}
       <Image
         className="w-full h-64 object-cover"
-        src={imageUrl + data?.thumbnailImage}
+        src={imageUrl + data?.thumbnailImage }
         alt="Course"
         height={500}
         width={500}

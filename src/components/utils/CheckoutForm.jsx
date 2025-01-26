@@ -14,8 +14,9 @@ import { dashboardUrl } from '@/redux/baseApi';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutForm = ({ product }) => {
-console.log('product', product);
-const token = Cookies.get('token');
+  console.log('product', product);
+  const token = Cookies.get('token');
+
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,8 @@ const token = Cookies.get('token');
 
   const user = useSelector((state) => state.user.user);
 
+  console.log('user', user)
+  console.log('courseid', product)
 
   const [createIntent] = useCreatePaymentIntentMutation();
 
@@ -54,7 +57,7 @@ const token = Cookies.get('token');
     });
 
 
-    console.log('response',res);
+    console.log('response', res);
 
 
     //  console.log(values,product);
@@ -71,38 +74,36 @@ const token = Cookies.get('token');
         payment_method: paymentMethodId,
       });
 
-      console.log('payment success', paymentIntent);
+      console.log('payment intent success', paymentIntent);
       if (paymentIntent.paymentIntent?.status === "succeeded") {
 
         const successData = {
-          user_id: user?.id,
-          product_id: product?.id,
-          transaction_id: paymentIntent?.paymentIntent?.id,
-          amount: product?.price,
-          street_address: values?.streetAddress,
-          city: values?.city,
-          contact: values?.contactNumber,
-          payment_method: 'card',
-          payment_status: "success"
+          paymentIntentId: paymentIntent?.paymentIntent?.id,
+          courseId: product?._id,
         }
 
 
         // console.log( "successData", successData);
-        await paymentSuccess(successData);
-        message?.success("Payment successfull");
-        setLoading(false);
+        const res = await paymentSuccess(successData);
+        // message?.success("Payment successfull");
+        // setLoading(false);
 
 
-        Swal.fire({
-          icon: "success",
-          title: "Payment successfull",
-          closeButtonAriaLabel: "Close",
-          text: `transection id : ${res?.data?.data?.id} amount: ${res?.data?.data?.amount} currency: ${res?.data?.data?.currency}`,
-          showConfirmButton: false,
+        if (res?.data?.success) {
 
-        }).then(() => {
-          window.location.href = `${dashboardUrl}?token=${token}`;
-        });
+          Swal.fire({
+            icon: "success",
+            title: "Payment successfull",
+            closeButtonAriaLabel: "Close",
+            text: `transection id : ${res?.data?.data?.id} amount: ${res?.data?.data?.amount} currency: ${res?.data?.data?.currency}`,
+            showConfirmButton: false,
+
+          }).then(() => {
+            window.location.href = `${dashboardUrl}?token=${token}`;
+          });
+
+        }
+        console.log('payment success', res?.data?.data, 'price', product?.price);
 
 
       } else {
@@ -174,6 +175,7 @@ const token = Cookies.get('token');
 
         <Form.Item>
           <Button
+            disabled={user?._id.includes(product?.enrolledStudents?._id)}
             htmlType="submit"
             loading={loading}
             style={{ backgroundColor: '#0E68E7' }}
@@ -182,6 +184,9 @@ const token = Cookies.get('token');
             <span> Enroll and Pay ${product?.price}</span>
           </Button>
         </Form.Item>
+
+
+
       </Form>
 
 

@@ -592,7 +592,7 @@ const page = ({ params }) => {
 
          
               <div className="grid grid-cols-1  md:grid-cols-2 mt-6 lg:grid-cols-2 gap-4">
-              {course?.data?.map((item) => (
+              {course?.data?.courses?.map((item) => (
                   <CourseCard
                     key={item.id}
                   data={item}

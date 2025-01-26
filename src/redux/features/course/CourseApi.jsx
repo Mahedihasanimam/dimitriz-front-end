@@ -9,6 +9,18 @@ const CourseApi = api.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+    getallWebinnar: builder.query({
+      query: () => ({
+        url: `/webinar/get-all-webinars`,
+        method: "GET",
+      }),
+      providesTags: ["webinar"],
+    }),
+
+
+
+
+
     getCourseByCategory: builder.query({
       query: () => ({
         url: `/course/get-all-courses-by-category`,
@@ -47,6 +59,10 @@ const CourseApi = api.injectEndpoints({
       }),
       providesTags: ["course"],
     }),
+
+
+
+    
 getcourseByInstructorId: builder.query({
       query: (id) => ({
         url: `/course/get-course-by-instructor-id/${id}`,
@@ -76,5 +92,6 @@ export const {
   useGetFiltaredCourseBycategoryQuery,
   useGetcourseByInstructorIdQuery,
   useCourseSearchQuery,
+  useGetallWebinnarQuery,
   
 } = CourseApi;

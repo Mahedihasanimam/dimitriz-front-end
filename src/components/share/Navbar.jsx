@@ -46,6 +46,7 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
       dispatch(setUser(user?.data?.data));
     }
   };
+  
   useEffect(() => {
     handlesetUser();
     const savedLang = Cookies.get("NEXT_LOCALE") || "en";
@@ -121,12 +122,16 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
 
   const userMenu = (
     <Menu>
-      <Menu.Item key="2">
-       <Link href={`${dashboardUrl}?token=${Cookies.get('token')}`}>{t("User Dashboard")}</Link>
+      {
+        user?.role?.includes("user") && <Menu.Item key="2">
+       <Link href={`${dashboardUrl}recordings?token=${Cookies.get('token')}`}>{t("User Dashboard")}</Link>
       </Menu.Item>
-      <Menu.Item key="3">
+      }
+      {
+        user?.role?.includes("instructor") && <Menu.Item key="3">
        <Link href={`${dashboardUrl}?token=${Cookies.get('token')}`}>{t("Instructor Dashboard")}</Link>
       </Menu.Item>
+      }
       <Menu.Item danger key="1" onClick={handleLogout}>
         {t("Logout")}
       </Menu.Item>
