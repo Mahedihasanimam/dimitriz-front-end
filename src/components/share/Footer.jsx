@@ -99,54 +99,54 @@ const Footer = () => {
                 <div className="flex   gap-6">
                   <ul className="space-y-[12px] text-[#E4E7EC] text-sm">
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=design`}>
                         {t("Art & Design")}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=development`}>
                        {t("Development")}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Communication`}>
                         {t('Communication')}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Videography`}>
                         {t('Videography')}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Photography`}>
                         {t('Photography')}
                       </Link>
                     </li>
                   </ul>
                   <ul className="space-y-[12px] text-[#E4E7EC] text-sm">
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Marketing`}>
                         {t("Marketing")}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Content Writing`}>
                         {t('Content Writing')}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Finance`}>
                         {t('Finance')}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Science`}>
                         {t('Science')}
                       </Link>
                     </li>
                     <li>
-                      <Link rel="noopener noreferrer" href="#">
+                      <Link  href={`/browseCourse/category/items?browse=Networking`}>
                         {t('Networking')}
                       </Link>
                     </li>

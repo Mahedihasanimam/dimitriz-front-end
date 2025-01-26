@@ -79,15 +79,6 @@ const categories = ["All Categories", ...new Set(data?.data?.result?.map((item) 
                 <CourseCard
                 data={item}
                   key={item._id}
-                  // courseimage={imageUrl + item.thumbnailImage}
-                  // courseTitle={item.courseTitle}
-                  // instructor={item.instructor}
-                  // rating={item.rating}
-                  // price={item.price}
-                  // reviews={item.reviews}
-                  // duration={item.duration}
-                  // students={item.students}
-                  // enrollLink={item.id}
                 />
               ))}
             </div>

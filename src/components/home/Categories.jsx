@@ -13,6 +13,7 @@ import catimage9 from "/public/images/icons/science.png";
 import catimage10 from "/public/images/icons/art.png";
 import { useTranslations } from "next-intl";
 import { useGetallCategoryQuery } from "@/redux/features/course/CourseApi";
+import Link from "next/link";
 const Categories = () => {
   const t =useTranslations()
 
@@ -26,6 +27,8 @@ const Categories = () => {
         <h2 className=" text-[24px] font-bold text-[#000000] font-Merriweather mb-8">{t("Categories")}</h2>
       <div className="grid lg:grid-cols-5  md:grid-cols-4 grid-cols-2 gap-4">
         {data?.data?.categories?.map((item, index) => (
+          <Link key={index} href={`/browseCourse/category/items?browse=${item?.courseCategory}`} >
+
           <div key={index} className="border border-gray-200 rounded-lg p-6 hover:shadow-lg hover:cursor-pointer transition-all duration-300 ease-in-out text-center ">
             <Image
               className=" block mx-auto mb-4"
@@ -41,6 +44,7 @@ const Categories = () => {
               {item?.count} {t("Course")}
             </p>
           </div>
+          </Link>
         ))}
       </div>
     </div>
