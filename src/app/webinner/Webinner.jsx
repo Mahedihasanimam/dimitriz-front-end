@@ -44,29 +44,47 @@ const Webinner = () => {
       Upcoming Webinars
       </h1>
     </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {data?.data?.result.map((webinar, index) => (
-            <div key={index} className="bg-white  shadow-lg rounded-lg overflow-hidden">
-             <div className='min-h-[340px] max-h-[350px]'>
-              {
-                webinar?.thumbnailImage &&
-             <Image  height={350} width={400} src={imageUrl + webinar.thumbnailImage} alt={webinar.title} className="  w-full   " />
-              }
-             </div>
-              <div className="p-6 ">
-                <h3 className="text-2xl font-semibold mb-2">{webinar.title}</h3>
-                <p className="text-gray-600 mb-1"><strong>Date:</strong> {webinar.date && new Date(webinar.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                <p className="text-gray-600 mb-1"><strong>Time:</strong> {webinar.time}</p>
-                <p className="text-gray-700 mb-4">{webinar.description}</p>
-               <Link target='_blank' href={`${webinar.webinarLink}`}>
-               <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                  Join Now
-                </button>
-               </Link>
-              </div>
-            </div>
-          ))}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  {data?.data?.result
+    ?.filter((webinar) => !webinar.isDeleted) // Filter out deleted webinars
+    .map((webinar, index) => (
+      <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="min-h-[340px] max-h-[350px]">
+          {webinar?.thumbnailImage && (
+            <Image
+              height={350}
+              width={400}
+              src={imageUrl + webinar.thumbnailImage}
+              alt={webinar.title}
+              className="w-full"
+            />
+          )}
         </div>
+        <div className="p-6">
+          <h3 className="text-2xl font-semibold mb-2">{webinar.title}</h3>
+          <p className="text-gray-600 mb-1">
+            <strong>Date:</strong>{" "}
+            {webinar.date &&
+              new Date(webinar.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+          </p>
+          <p className="text-gray-600 mb-1">
+            <strong>Time:</strong> {webinar.time}
+          </p>
+          <p className="text-gray-700 mb-4">{webinar.description}</p>
+          <Link target="_blank" href={`${webinar.webinarLink}`}>
+            <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+              Join Now
+            </button>
+          </Link>
+        </div>
+      </div>
+    ))}
+</div>
+
       </div>
     </section>
   );

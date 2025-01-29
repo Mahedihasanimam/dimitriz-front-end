@@ -1,7 +1,6 @@
 {
-    "routes": [
-      { "src": "/chat", "dest": "/Chat" },
-      { "src": "/[^.]+", "dest": "/", "status": 200 }
-    ]
-  }
-  
+  "routes": [
+    { "src": "/chat", "dest": "/chat" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

@@ -15,6 +15,9 @@ const ContactForm = () => {
     return (
         <div className="max-w-3xl mx-auto my-10 p-6 bg-white shadow rounded">
             <h2 className="text-2xl font-bold mb-6 text-center">Contact Us</h2>
+            <p>Need Assistance?
+If you encounter any issues during the enrollment process, reach out to our support team at support@pantognostis.com.
+</p>
             <Form
                 name="contact"
                 onFinish={onFinish}

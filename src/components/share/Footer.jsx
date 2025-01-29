@@ -21,6 +21,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Cookies from "universal-cookie";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import GoogleTranslate from "../GoogleTranslate";
 
 const Footer = () => {
   const router = useRouter();
@@ -81,6 +82,8 @@ const Footer = () => {
             { value: "gr", label: "greek" },
           ]}
         />
+
+        <GoogleTranslate/>
               {/* <Button
                 className="text-[#FFFFFF] hover:text-white bg-[#000000] hover:bg-[#000000] border-[1px]  border-[#E4E7EC] text-[16px] font-semibold p-6"
                 size="large"

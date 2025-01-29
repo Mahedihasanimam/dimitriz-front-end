@@ -226,7 +226,7 @@ const page = ({ params }) => {
               {/* right side content here-------------------------------------------------- */}
               <div className=" bg-white rounded-lg border border-[#E4E7EC] lg:max-w-lg md:max-w-lg w-full mx-auto">
                 <div className="relative border border-white rounded-lg ">
-                  {
+                  {/* {
                     data?.data?.promoVideo ? (
                       <video
                         className=" rounded-lg  "
@@ -237,7 +237,7 @@ const page = ({ params }) => {
 
                         src={imageUrl + data?.data?.promoVideo}
                       ></video>
-                    ) : (
+                    ) : ( */}
                       <Image
                         className="w-full h-64 object-cover"
                         src={imageUrl + data?.data?.thumbnailImage}
@@ -245,8 +245,8 @@ const page = ({ params }) => {
                         height={500}
                         width={500}
                       />
-                    )
-                  }
+                    {/* )
+                  } */}
                   <p className="absolute bottom-2 left-1/3 mt-2 ml-2 bg-opacity-70 text-sm font-bold  text-[#FCFCFD]">
                     {t("Preview this course")}
                   </p>
