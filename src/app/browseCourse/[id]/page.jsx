@@ -144,7 +144,7 @@ const page = ({ params }) => {
         <div className="mb-10  ">
           {/* hero section here ---------------------------------------------------------------------------- */}
           <div className="xl:bg-[#1D2939] lg:bg-[#1D2939]   bg-transparent ">
-            <div className="container mx-auto  flex gap-4 relative py-6 lg:px-6 px-2">
+            <div className="container mx-auto  flex justify-between gap-4 relative py-6 lg:px-6 px-2">
               {/* left side content here-------------------------------------------- */}
               <div className="xl:max-w-2xl lg:max-w-xl w-full space-y-3 xl:block lg:block  hidden ">
                 <h1 className="text-white text-2xl font-bold font-Merriweather">
@@ -224,7 +224,7 @@ const page = ({ params }) => {
               </div>
 
               {/* right side content here-------------------------------------------------- */}
-              <div className="xl:max-w-2xl lg:max-w-sm    mx-auto bg-white border-2 border-[#dee0e2]  rounded-lg  xl:fixed lg:fixed block xl:right-[9%]  lg:right-[1%] max-[1440]:fixed max-[1024]:right-[6px] max-[1440]:fixed max-[1440]:right-[0%] lg:shadow-lg z-50  h-fit mb-8 w-[465px]">
+              <div className=" bg-white rounded-lg border border-[#E4E7EC] lg:max-w-lg md:max-w-lg w-full mx-auto">
                 <div className="relative border border-white rounded-lg ">
                   {
                     data?.data?.promoVideo ? (

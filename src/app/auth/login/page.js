@@ -34,11 +34,7 @@ const signIn = () => {
 
 
         if (response?.data?.data?.user?.role.includes("instructor") || response?.data?.data?.user?.role.includes("admin")) {
-          const rolePath = response?.data?.data?.user?.role.includes("admin")
-            ? "usermanagement"
-            : response?.data?.data?.user?.role.includes("user")
-              ? "recordings"
-              : "";
+          const rolePath = response?.data?.data?.user?.role.includes("admin")? "usermanagement": response?.data?.data?.user?.role.includes("instructor")? "": "";
 
           router.push(`${dashboardUrl}${rolePath}?token=${response?.data?.data?.token}`);
 
