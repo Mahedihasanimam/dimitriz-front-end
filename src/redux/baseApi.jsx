@@ -22,4 +22,4 @@ export const api = createApi({
 });
 
 export const imageUrl = "http://27.0.175.106:5000/";
-export const dashboardUrl = "http://localhost:5173/";
+export const dashboardUrl = "http://27.0.175.106:4173/";
