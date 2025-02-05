@@ -105,12 +105,12 @@ const page = () => {
       </div>
 
       {/* collected info about instructors ant students  */}
-      <div className="bg-[#D8F0FF] py-24">
+      {/* <div className="bg-[#D8F0FF] py-24">
         <div className="container mx-auto flex flex-wrap items-start justify-around gap-8">
-          {/* students section  */}
+ 
           <div className="flex  gap-2">
             <div>
-              {/* <UsergroupAddOutlined /> */}
+         
               <Image src={student} alt="student" className="w-10 h-10" />
             </div>
             <div>
@@ -118,10 +118,10 @@ const page = () => {
               <p className="text-sm text-[#475467] font-medium">students</p>
             </div>
           </div>
-          {/* instructors section  */}
+        
           <div className="flex gap-2">
             <div>
-              {/* <UsergroupAddOutlined /> */}
+             
               <Image src={certificate} alt="student" className="w-10 h-10" />
             </div>
             <div>
@@ -131,10 +131,10 @@ const page = () => {
               </p>
             </div>
           </div>
-          {/* countrys section  */}
+          
           <div className="flex gap-2">
             <div>
-              {/* <UsergroupAddOutlined /> */}
+              
               <Image src={gloval} alt="student" className="w-10 h-10" />
             </div>
             <div>
@@ -144,10 +144,10 @@ const page = () => {
               </p>
             </div>
           </div>
-          {/* succdess section  */}
+    
           <div className="flex gap-2">
             <div>
-              {/* <UsergroupAddOutlined /> */}
+             
               <Image src={success} alt="student" className="w-10 h-10" />
             </div>
             <div>
@@ -158,10 +158,10 @@ const page = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* why become an instructor section  */}
-      <div className="bg-[#195671] lg:pt-24 pt-6 lg:pl-24 pl-6 lg:pr-24  pr-6  ">
+      <div className="bg-[#195671] lg:pt-24 pt-6 lg:pl-24 pl-6 lg:pr-24  pr-6  pb-12 ">
         <div className="lg:flex md:flex flex-row gap-16  justify-center  container mx-auto ">
           <div className="lg:w-1/2 w-full ">
             {/* left content image  */}

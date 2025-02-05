@@ -199,7 +199,12 @@ const Footer = () => {
                   </div>
                   <div className="pl-2">
                     <MailFilled className=" text-lg text-[#4BCAE9] pr-2" />
-                    <span className="text-[#E4E7EC]">{t('support@pantognostis.com')}</span>
+                    <span className="text-[#E4E7EC]">
+                    <a href="mailto:support@pantognostis.com?subject=Support%20Request&body=Hello,%20I%20need%20help%20with...">
+                    support@pantognostis.com
+</a>
+
+                    </span>
                   </div>
                 </div>
               </div>
