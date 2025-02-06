@@ -200,8 +200,8 @@ const Footer = () => {
                   <div className="pl-2">
                     <MailFilled className=" text-lg text-[#4BCAE9] pr-2" />
                     <span className="text-[#E4E7EC]">
-                    <a href="mailto:support@pantognostis.com?subject=Support%20Request&body=Hello,%20I%20need%20help%20with...">
-                    support@pantognostis.com
+                    <a href="mailto:pantognostissup@gmail.com?subject=Support%20Request&body=Hello,%20I%20need%20help%20with...">
+                    pantognostissup@gmail.com
 </a>
 
                     </span>
@@ -213,7 +213,7 @@ const Footer = () => {
             {/* copyright  */}
           <div className="flex justify-center  border-t-2 border-[#475467] py-4">
             <p className="text-sm text-[#E4E7EC]">
-              {t('© Pantagonostis 2024 | All rights reserved.')}
+              {t('© Pantagonostis 2025 | All rights reserved.')}
             </p>
           </div>
         </div>
