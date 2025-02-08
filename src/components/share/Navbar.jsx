@@ -53,8 +53,6 @@ const {data:searchdata}=useCourseSearchQuery(searchtext);
     setLanguage(savedLang);
   }, []);
 
-
-
  const handleSearch = (e) => {
   setSearchtext(e.target.value);
   handleshowsearchmodal();
